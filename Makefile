@@ -1,7 +1,9 @@
 all: linux
 
-linux:
+linux: src/main.c headers/main.h
+	gcc -o trabalho1compgraf_linux src/main.c -lglut
 
-win:
+win: src/main.c headers/main.h
 
-clean:
+clean: 
+	rm trabalho1compgraf_linux
