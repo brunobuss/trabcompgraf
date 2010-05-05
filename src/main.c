@@ -4,6 +4,9 @@
 GLsizei tamJanelaX = CONFIG_TAMHOR_INICIAL;
 GLsizei tamJanelaY = CONFIG_TAMVER_INICIAL;
 
+GLdouble razaoX;
+GLdouble razaoY;
+
 int redesenhaJanela = 1;
 
 
@@ -127,15 +130,10 @@ void redimensionaCallBack(int w, int h)
 	tamJanelaX = w;
 	tamJanelaY = h;
 
+	razaoX = (GLdouble)w/h;
+	razaoY = (GLdouble)h/w;
+
 	glutPostRedisplay();
-
-	glViewport(0, 0, (GLsizei) w, (GLsizei) h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-50.0, 50.0, -50.0, 50.0, -1.0, 1.0);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 }
 
 void timerFPS(int valor)
@@ -178,9 +176,6 @@ void selecionaViewport(int i)
 
 void defineCoordenadas(GLdouble inicial, GLdouble final)
 {
-	GLdouble razaoX = (GLdouble)tamJanelaX/tamJanelaY;
-	GLdouble razaoY = (GLdouble)tamJanelaY/tamJanelaX;
-
 	if(tamJanelaX == tamJanelaY) 	 gluOrtho2D(inicial, final, inicial, final);
 	else if(tamJanelaX > tamJanelaY) gluOrtho2D(inicial * razaoX, final * razaoX, inicial, final);
 	else				 gluOrtho2D(inicial, final, inicial * razaoY, final * razaoY);
@@ -189,8 +184,6 @@ void defineCoordenadas(GLdouble inicial, GLdouble final)
 
 void desenhaBorda(GLdouble inicial, GLdouble final, GLfloat red, GLfloat green, GLfloat blue, GLfloat tam)
 {
-	GLdouble razaoX = (GLdouble)tamJanelaX/tamJanelaY;
-	GLdouble razaoY = (GLdouble)tamJanelaY/tamJanelaX;
 	GLdouble xi = inicial,
 		 xf = final  ,
                  yi = inicial,
