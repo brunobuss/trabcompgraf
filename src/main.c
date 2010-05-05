@@ -1,8 +1,8 @@
 #include "../headers/main.h"
 
 /* Variáveis */
-int tamJanelaX = CONFIG_TAMHOR_INICIAL;
-int tamJanelaY = CONFIG_TAMVER_INICIAL;
+GLsizei tamJanelaX = CONFIG_TAMHOR_INICIAL;
+GLsizei tamJanelaY = CONFIG_TAMVER_INICIAL;
 
 int redesenhaJanela = 1;
 
@@ -29,8 +29,8 @@ void setupGlut(int *argc, char *argv[])
 	glClearColor(0.0, 0.0, 0.0, 0.0); /* Define a cor do GL_COLOR_BUFFER_BIT */
 	glShadeModel(GL_FLAT);
 
-	glutDisplayFunc(displayCallBack);
-	glutReshapeFunc(reshapeCallBack);
+	glutDisplayFunc(desenhaCallBack);
+	glutReshapeFunc(redimensionaCallBack);
 	glutKeyboardFunc(tecladoCallBack);
 	glutMouseFunc(mouseCallBack);
 	glutIdleFunc(idleCallBack);
@@ -39,14 +39,42 @@ void setupGlut(int *argc, char *argv[])
 	DBG(printf("...GLUT configurado com sucesso\n"));
 }
 
-void displayCallBack(void)
+void desenhaCallBack(void)
 {
 	if(redesenhaJanela == 0) return;
 
 	DBG(printf("Redesenhando a tela...\n"));
 	redesenhaJanela = 0;
 
-	glClear(GL_COLOR_BUFFER_BIT); /* "Apagando" a tela */
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	selecionaViewport(1);
+	/* Rotina de desenho do quadrante superior esquerdo */
+	defineCoordenadas(-10.0, 10.0);
+	glColor3f(1.0, 0.0, 0.0);
+	glRectd(-8.0, -8.0, 8.0, 8.0);
+
+
+	selecionaViewport(2);
+	/* Rotina de desenho do quadrante superior direito */
+	defineCoordenadas(-10.0, 10.0);
+	glColor3f(0.0, 1.0, 0.0);
+	glRectd(-8.0, -8.0, 8.0, 8.0);
+
+
+	selecionaViewport(3);
+	/* Rotina de desenho do quadrande inferior esquerdo */
+	defineCoordenadas(-10.0, 10.0);
+	glColor3f(0.0, 0.0, 1.0);
+	glRectd(-8.0, -8.0, 8.0, 8.0);
+
+
+	selecionaViewport(4);
+	/* Rotina de desenho do quadrante inferior direito */
+	defineCoordenadas(-10.0, 10.0);
+	glColor3f(1.0, 1.0, 1.0);
+	glRectd(-8.0, -8.0, 8.0, 8.0);
+
 
 	glutSwapBuffers();
 
@@ -78,15 +106,20 @@ void mouseCallBack(int botao, int estado, int x, int y)
         }
 }
 
-void reshapeCallBack(int w, int h)
+void redimensionaCallBack(int w, int h)
 {
 	DBG(printf("Redimensionando a janela para: largura = %d altura = %d\n", w, h));
 
+	tamJanelaX = w;
+	tamJanelaY = h;
+
+	glutPostRedisplay();
+
 	glViewport(0, 0, (GLsizei) w, (GLsizei) h);
 	glMatrixMode(GL_PROJECTION);
-
 	glLoadIdentity();
 	glOrtho(-50.0, 50.0, -50.0, 50.0, -1.0, 1.0);
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -99,3 +132,44 @@ void timerFPS(int valor)
 	glutPostRedisplay();
 	glutTimerFunc(CONFIG_FPS_TIMER, timerFPS, 1);
 }
+
+void selecionaViewport(int i)
+{
+	GLsizei meioX = tamJanelaX/2;
+	GLsizei meioY = tamJanelaY/2;
+
+	DBG(printf("Preparando a viewport %d...\n", i));
+
+	switch(i)
+	{
+		case 1: /* superior esquerdo */
+			glViewport(0, meioY, meioX, meioY);
+			break;
+		case 2: /* superior direito  */
+			glViewport(meioX, meioY, meioX, meioY);
+			break;
+		case 3: /* inferior esquerdo */
+			glViewport(0, 0, meioX, meioY);
+			break;
+		case 4: /* inferior direito  */
+			glViewport(meioX, 0, meioX, meioY);
+			break;
+	}
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	DBG(printf("Viewport preparada com sucesso\n."));
+}
+
+void defineCoordenadas(GLdouble inicial, GLdouble final)
+{
+	GLdouble razaoX = (GLdouble)tamJanelaX/tamJanelaY;
+	GLdouble razaoY = (GLdouble)tamJanelaY/tamJanelaX;
+
+	if(tamJanelaX == tamJanelaY) 	 gluOrtho2D(inicial, final, inicial, final);
+	else if(tamJanelaX > tamJanelaY) gluOrtho2D(inicial * razaoX, final * razaoX, inicial, final);
+	else				 gluOrtho2D(inicial, final, inicial * razaoY, final * razaoY);
+
+}
+

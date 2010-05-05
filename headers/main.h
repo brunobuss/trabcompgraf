@@ -7,9 +7,8 @@
 /* Funcão de inicialização do OpenGL/GLUT/GLUI */
 void setupGlut(int *argc, char *argv[]);
 
-/* Funções de callback do GLUT: */
 /* Ciclo de redraw da janela */
-void displayCallBack(void);
+void desenhaCallBack(void);
 /* Processamento enquanto a aplicação está em idle */
 void idleCallBack();
 /* Resposta a ações do teclado */
@@ -17,9 +16,20 @@ void tecladoCallBack(unsigned char tecla, int x, int y);
 /* Resposta a ações do mouse */
 void mouseCallBack(int button, int state, int x, int y);
 /* Redimensionamento da janela */
-void reshapeCallBack(int w, int h);
+void redimensionaCallBack(int w, int h);
 /* Temporizador responsavel pelo controle da contagem de FPS */
 void timerFPS(int valor);
+
+
+/* Prepara um dos 4 quadrantes para desenho
+   i = 1 -> superior esquerdo
+     = 2 -> superior direito
+     = 3 -> inferior esquerdo
+     = 4 -> inferior direito */
+void selecionaViewport(int i);
+
+/* Define os limites das coordenadas que irão aparecer na viewport */
+void defineCoordenadas(GLdouble inicial, GLdouble final);
 
 
 
