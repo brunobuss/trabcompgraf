@@ -51,20 +51,30 @@ void desenhaCallBack(void)
 	selecionaViewport(1);
 	/* Rotina de desenho do quadrante superior esquerdo */
 	defineCoordenadas(-10.0, 10.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 	glColor3f(1.0, 0.0, 0.0);
 	glRectd(-8.0, -8.0, 8.0, 8.0);
-
 
 	selecionaViewport(2);
 	/* Rotina de desenho do quadrante superior direito */
 	defineCoordenadas(-10.0, 10.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 	glColor3f(0.0, 1.0, 0.0);
 	glRectd(-8.0, -8.0, 8.0, 8.0);
-
 
 	selecionaViewport(3);
 	/* Rotina de desenho do quadrande inferior esquerdo */
 	defineCoordenadas(-10.0, 10.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 	glColor3f(0.0, 0.0, 1.0);
 	glRectd(-8.0, -8.0, 8.0, 8.0);
 
@@ -72,6 +82,10 @@ void desenhaCallBack(void)
 	selecionaViewport(4);
 	/* Rotina de desenho do quadrante inferior direito */
 	defineCoordenadas(-10.0, 10.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 	glColor3f(1.0, 1.0, 1.0);
 	glRectd(-8.0, -8.0, 8.0, 8.0);
 
@@ -173,3 +187,38 @@ void defineCoordenadas(GLdouble inicial, GLdouble final)
 
 }
 
+void desenhaBorda(GLdouble inicial, GLdouble final, GLfloat red, GLfloat green, GLfloat blue, GLfloat tam)
+{
+	GLdouble razaoX = (GLdouble)tamJanelaX/tamJanelaY;
+	GLdouble razaoY = (GLdouble)tamJanelaY/tamJanelaX;
+	GLdouble xi = inicial,
+		 xf = final  ,
+                 yi = inicial,
+                 yf = final  ;
+
+	if(tam <= 0.01) tam = 1.0;
+
+	if(tamJanelaX > tamJanelaY)
+	{
+		xi = inicial * razaoX;
+		xf = final   * razaoX;
+	}
+	else
+	{
+		yi = inicial * razaoY;
+		yf = final   * razaoY;
+	}
+
+
+	glColor3f(red, green, blue);
+	glLineWidth(tam);
+
+	glBegin(GL_LINE_STRIP);
+		glVertex2f(xi, yi);
+		glVertex2f(xi, yf);
+		glVertex2f(xf, yf);
+		glVertex2f(xf, yi);
+		glVertex2f(xi, yi);		
+	glEnd();
+
+}

@@ -31,7 +31,8 @@ void selecionaViewport(int i);
 /* Define os limites das coordenadas que irão aparecer na viewport */
 void defineCoordenadas(GLdouble inicial, GLdouble final);
 
-
+/* Cria uma borda em torno da área de desenho com espessura tam e cores (red,green,blue) */
+void desenhaBorda(GLdouble inicial, GLdouble final, GLfloat red, GLfloat green, GLfloat blue, GLfloat tam);
 
 /* Constantes utilizadas */
 /* Indica se o programa deve imprimir informações de debug */
