@@ -1,6 +1,6 @@
 #include "../headers/tresmeios.h"
 
-int nmax = 12;
+int nmax = 10;
 
 void desenha3Meios(GLdouble x, GLdouble y, int n, GLdouble lado)
 {

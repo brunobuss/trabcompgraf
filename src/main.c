@@ -7,6 +7,18 @@ GLsizei tamJanelaY = CONFIG_TAMVER_INICIAL;
 GLdouble razaoX;
 GLdouble razaoY;
 
+/* Configuração das Viewports */
+GLdouble vpLimites[4][2] = {    {-10.0, 10.0},
+				{-10.0, 10.0},
+				{-10.0, 10.0},
+				{-10.0, 10.0}};
+
+GLfloat vpCorBorda[4][3] = {	{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0}};
+
+
 int redesenhaJanela = 1;
 
 
@@ -51,47 +63,71 @@ void desenhaCallBack(void)
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	selecionaViewport(1);
-	/* Rotina de desenho do quadrante superior esquerdo */
-	defineCoordenadas(-10.0, 10.0);
+
+	selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
+	defineCoordenadas(vpLimites[VIEWPORT_SUPERIOR_ESQUERDA][0],
+			  vpLimites[VIEWPORT_SUPERIOR_ESQUERDA][1]);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	desenha3Meios(0.0, 0.0, 0, 14.0);
-	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
+	desenhaBorda(vpLimites[VIEWPORT_SUPERIOR_ESQUERDA][0],
+		     vpLimites[VIEWPORT_SUPERIOR_ESQUERDA][1],
+		     vpCorBorda[VIEWPORT_SUPERIOR_ESQUERDA][0],
+		     vpCorBorda[VIEWPORT_SUPERIOR_ESQUERDA][1],
+		     vpCorBorda[VIEWPORT_SUPERIOR_ESQUERDA][2],
+		     CONFIG_TAM_BORDA);
 
-	selecionaViewport(2);
-	/* Rotina de desenho do quadrante superior direito */
-	defineCoordenadas(-10.0, 10.0);
+
+
+	selecionaViewport(VIEWPORT_SUPERIOR_DIREITA);
+	defineCoordenadas(vpLimites[VIEWPORT_SUPERIOR_DIREITA][0],
+			  vpLimites[VIEWPORT_SUPERIOR_DIREITA][1]);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 	glColor3f(0.0, 1.0, 0.0);
 	glRectd(-8.0, -8.0, 8.0, 8.0);
+	desenhaBorda(vpLimites[VIEWPORT_SUPERIOR_DIREITA][0],
+		     vpLimites[VIEWPORT_SUPERIOR_DIREITA][1],
+		     vpCorBorda[VIEWPORT_SUPERIOR_DIREITA][0],
+		     vpCorBorda[VIEWPORT_SUPERIOR_DIREITA][1],
+		     vpCorBorda[VIEWPORT_SUPERIOR_DIREITA][2],
+		     CONFIG_TAM_BORDA);
 
-	selecionaViewport(3);
-	/* Rotina de desenho do quadrande inferior esquerdo */
-	defineCoordenadas(-10.0, 10.0);
+
+
+	selecionaViewport(VIEWPORT_INFERIOR_ESQUERDA);
+	defineCoordenadas(vpLimites[VIEWPORT_INFERIOR_ESQUERDA][0],
+			  vpLimites[VIEWPORT_INFERIOR_ESQUERDA][1]);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 	glColor3f(0.0, 0.0, 1.0);
 	glRectd(-8.0, -8.0, 8.0, 8.0);
+	desenhaBorda(vpLimites[VIEWPORT_INFERIOR_ESQUERDA][0],
+		     vpLimites[VIEWPORT_INFERIOR_ESQUERDA][1],
+		     vpCorBorda[VIEWPORT_INFERIOR_ESQUERDA][0],
+		     vpCorBorda[VIEWPORT_INFERIOR_ESQUERDA][1],
+		     vpCorBorda[VIEWPORT_INFERIOR_ESQUERDA][2],
+		     CONFIG_TAM_BORDA);
 
 
-	selecionaViewport(4);
-	/* Rotina de desenho do quadrante inferior direito */
-	defineCoordenadas(-10.0, 10.0);
+
+	selecionaViewport(VIEWPORT_INFERIOR_DIREITA);
+	defineCoordenadas(vpLimites[VIEWPORT_INFERIOR_DIREITA][0],
+			  vpLimites[VIEWPORT_INFERIOR_DIREITA][1]);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 	glColor3f(1.0, 1.0, 1.0);
 	glRectd(-8.0, -8.0, 8.0, 8.0);
-
-
+	desenhaBorda(vpLimites[VIEWPORT_INFERIOR_DIREITA][0],
+		     vpLimites[VIEWPORT_INFERIOR_DIREITA][1],
+		     vpCorBorda[VIEWPORT_INFERIOR_DIREITA][0],
+		     vpCorBorda[VIEWPORT_INFERIOR_DIREITA][1],
+		     vpCorBorda[VIEWPORT_INFERIOR_DIREITA][2],
+		     CONFIG_TAM_BORDA);
 
 
 	glutSwapBuffers();
@@ -155,16 +191,16 @@ void selecionaViewport(int i)
 
 	switch(i)
 	{
-		case 1: /* superior esquerdo */
+		case VIEWPORT_SUPERIOR_ESQUERDA:
 			glViewport(0, meioY, meioX, meioY);
 			break;
-		case 2: /* superior direito  */
+		case VIEWPORT_SUPERIOR_DIREITA :
 			glViewport(meioX, meioY, meioX, meioY);
 			break;
-		case 3: /* inferior esquerdo */
+		case VIEWPORT_INFERIOR_ESQUERDA:
 			glViewport(0, 0, meioX, meioY);
 			break;
-		case 4: /* inferior direito  */
+		case VIEWPORT_INFERIOR_DIREITA :
 			glViewport(meioX, 0, meioX, meioY);
 			break;
 	}
@@ -190,7 +226,7 @@ void desenhaBorda(GLdouble inicial, GLdouble final, GLfloat red, GLfloat green, 
                  yi = inicial,
                  yf = final  ;
 
-	if(tam <= 0.01) tam = 1.0;
+	if(tam < 0.01) tam = 1.0;
 
 	if(tamJanelaX > tamJanelaY)
 	{
