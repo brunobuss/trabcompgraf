@@ -57,7 +57,7 @@ void desenhaCallBack(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	desenha3Meios(0.0, 0.0, 0, 16.0);
+	desenha3Meios(0.0, 0.0, 0, 14.0);
 	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 
 	selecionaViewport(2);

@@ -8,6 +8,6 @@
 
 void desenha3Meios(GLdouble x, GLdouble y, int n, GLdouble lado);
 
-void defineCorInterpolada(int n);
+void defineCorInterpolada(int n, GLdouble *p);
 
 #endif /* H_3MEIOS */

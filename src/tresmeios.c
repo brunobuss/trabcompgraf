@@ -1,24 +1,20 @@
 #include "../headers/tresmeios.h"
 
-int nmax = 4;
+int nmax = 12;
 
 void desenha3Meios(GLdouble x, GLdouble y, int n, GLdouble lado)
 {
 	GLdouble pax, pay,
                  pbx, pby,
 		 pcx, pcy;
+	GLdouble cor[3];
 
-
-	GLfloat cores[5][3] = {
-			{1.0, 0.0, 0.0},
-			{1.0, 1.0, 0.0},
-			{0.0, 1.0, 0.0},
-			{0.0, 1.0, 1.0},
-			{0.0, 0.0, 1.0}};
 
 	if(n > nmax) return;
 
-	glColor3fv(cores[n]);
+	defineCorInterpolada(n, cor);
+
+	glColor3dv(cor);
 
 
 	pax = x;
@@ -48,9 +44,14 @@ void desenha3Meios(GLdouble x, GLdouble y, int n, GLdouble lado)
 	desenha3Meios(x + lado / 2.0 , y + lado / (2 * sqrt(3.0)), n + 1, lado);
 }
 
-void defineCorInterpolada(int n)
+void defineCorInterpolada(int n, GLdouble *p)
 {
+	GLdouble origem, destino;
 
+	destino = (GLdouble)n /(GLdouble) nmax;
+	origem = 1.0 - destino;
 
-
+	p[0] = origem;
+	p[1] = 0.0;
+	p[2] = destino;
 }
