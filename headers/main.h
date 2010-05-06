@@ -3,6 +3,8 @@
 
 #include<GL/glut.h>
 #include<stdio.h> /* Para printfs de debug e outras informações :) */
+#include "tresmeios.h"
+
 
 /* Funcão de inicialização do OpenGL/GLUT/GLUI */
 void setupGlut(int *argc, char *argv[]);

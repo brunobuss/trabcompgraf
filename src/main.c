@@ -57,9 +57,8 @@ void desenhaCallBack(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	desenha3Meios(0.0, 0.0, 0, 16.0);
 	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
-	glColor3f(1.0, 0.0, 0.0);
-	glRectd(-8.0, -8.0, 8.0, 8.0);
 
 	selecionaViewport(2);
 	/* Rotina de desenho do quadrante superior direito */
@@ -91,6 +90,8 @@ void desenhaCallBack(void)
 	desenhaBorda(-10.0, 10.0, 1.0, 1.0, 1.0, 1.0);
 	glColor3f(1.0, 1.0, 1.0);
 	glRectd(-8.0, -8.0, 8.0, 8.0);
+
+
 
 
 	glutSwapBuffers();
