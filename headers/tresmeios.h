@@ -3,6 +3,7 @@
 
 #include<GL/glut.h>
 #include<math.h>
+#include "debug.h"
 
 /* ===Funções=== */
 

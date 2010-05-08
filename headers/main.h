@@ -3,6 +3,7 @@
 
 #include<GL/glut.h>
 #include<stdio.h> /* Para printfs de debug e outras informações :) */
+#include "debug.h"
 #include "tresmeios.h"
 #include "movimentos.h"
 #include "rostorobo.h"
@@ -48,9 +49,6 @@ void aplicaZoomViewport(int viewport, int x, int y);
 void aplicaUnZoomViewport(int viewport);
 
 /* ===Constantes=== */
-/* Indica se o programa deve imprimir informações de debug */
-#define DEBUG 0
-
 /* Configurações inicial dos programa */
 #define CONFIG_DISPLAYMODE GLUT_DOUBLE | GLUT_RGB
 #define CONFIG_TAMHOR_INICIAL 500
@@ -69,9 +67,6 @@ void aplicaUnZoomViewport(int viewport);
 #define VIEWPORT_INFERIOR_DIREITA  3
 
 #define CONFIG_TAM_BORDA 1.0
-
-/* Macros */
-#define DBG(x) if(DEBUG) { x; }
 
 
 #endif /* H-MAIN */
