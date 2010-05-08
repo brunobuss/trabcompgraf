@@ -24,7 +24,7 @@ void movimentos(GLdouble l, GLfloat a, GLfloat d, GLfloat t)
     angMovimento += a / 10;
 
     glLineWidth(2.0);
-    printf("l: %lf pax: %lf pay: %lf angMovimento: %lf\n", l,pax,pay, angMovimento);
+    DBG(printf("l: %lf pax: %lf pay: %lf angMovimento: %lf\n", l,pax,pay, angMovimento));
     glPushMatrix();
     glRotatef(angMovimento,0.0,0.0,1.0);
     glBegin(GL_LINE_LOOP);
