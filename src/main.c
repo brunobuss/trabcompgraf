@@ -308,7 +308,7 @@ void aplicaZoomViewport(int viewport, int x, int y)
 	scaleX = diferencaX / 4.0;
 	scaleY = diferencaY / 4.0; 
 
-	printf("Novo Centro = (%lf %lf)\n sX = %lf sY = %lf\n", novoCentroX, novoCentroY, scaleX, scaleY);
+	DBG(printf("Novo Centro = (%lf %lf)\n sX = %lf sY = %lf\n", novoCentroX, novoCentroY, scaleX, scaleY));
 
 
 	vpLimites[viewport][0] = novoCentroX - scaleX;
@@ -333,7 +333,7 @@ void aplicaUnZoomViewport(int viewport)
 	scaleX = diferencaX;
 	scaleY = diferencaY; 
 
-	printf("Novo Centro = (%lf %lf)\n sX = %lf sY = %lf\n", novoCentroX, novoCentroY, scaleX, scaleY);
+	DBG(printf("Novo Centro = (%lf %lf)\n sX = %lf sY = %lf\n", novoCentroX, novoCentroY, scaleX, scaleY));
 
 
 	vpLimites[viewport][0] = novoCentroX - scaleX;
