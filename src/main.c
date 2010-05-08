@@ -134,6 +134,8 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_SUPERIOR_ESQUERDA, x, y);
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
+					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_ESQUERDA);
+					if(estado == GLUT_UP  ) terminouPicada();
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
@@ -161,6 +163,8 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_SUPERIOR_ESQUERDA);
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
+					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_DIREITA);
+					if(estado == GLUT_UP  ) terminouPicada();
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
@@ -379,4 +383,30 @@ void aplicaUnZoomViewport(int viewport)
 	vpLimites[viewport][3] = novoCentroY + scaleY;
 
 	redesenhaJanela = 1;
+}
+
+void mousequito(int x, int y, int t)
+{
+	GLdouble diferencaX, diferencaY;
+        GLsizei meioX = tamJanelaX/2;
+        GLsizei meioY = tamJanelaY/2;
+	GLdouble rX, rY;	
+	GLdouble px, py;
+
+	rX = (GLdouble) (x - meioX)/meioX;
+	rY = (GLdouble) ((tamJanelaY - y) - meioY)/meioY;
+
+	diferencaX = vpLimites[VIEWPORT_SUPERIOR_DIREITA][1] - vpLimites[VIEWPORT_SUPERIOR_DIREITA][0];
+	diferencaY = vpLimites[VIEWPORT_SUPERIOR_DIREITA][3] - vpLimites[VIEWPORT_SUPERIOR_DIREITA][2];
+
+	px = vpLimites[VIEWPORT_SUPERIOR_DIREITA][0] + (rX  * diferencaX);
+	py = vpLimites[VIEWPORT_SUPERIOR_DIREITA][2] + (rY  * diferencaY);
+
+	if	(tamJanelaX > tamJanelaY) px *= razaoX;
+	else if (tamJanelaY > tamJanelaX) py *= razaoY;
+
+	if(px > vpLimites[VIEWPORT_SUPERIOR_DIREITA][1] || px < vpLimites[VIEWPORT_SUPERIOR_DIREITA][0] ||
+	   py > vpLimites[VIEWPORT_SUPERIOR_DIREITA][3] || py < vpLimites[VIEWPORT_SUPERIOR_DIREITA][2]) return;
+
+	adicionaPicada(px, py, t);
 }

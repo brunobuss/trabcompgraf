@@ -48,6 +48,10 @@ void aplicaZoomViewport(int viewport, int x, int y);
 /* Modifica as coordenadas da viewport para efeito de zoom out*/
 void aplicaUnZoomViewport(int viewport);
 
+/* Ativa o mousequito na viewport 2 */
+void mousequito(int x, int y, int t);
+
+
 /* ===Constantes=== */
 /* Configurações inicial dos programa */
 #define CONFIG_DISPLAYMODE GLUT_DOUBLE | GLUT_RGB
