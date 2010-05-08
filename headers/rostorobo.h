@@ -6,16 +6,22 @@
 #include "debug.h"
 
 /* ===Funções=== */
+
+/* Desenha o rosto do Robo */
 void RostoRobo();
 
+/* Adiciona uma picada no ponto (x, y) */
 void adicionaPicada(GLdouble x, GLdouble y);
 
+/* Funções para desenhar os objetos geométricos da cara do robo */
 void desenhaFundoRosto();
 void desenhaFundoBoca();
 void desenhaDentes();
 void desenhaCirculo(GLdouble x, GLdouble y, GLdouble *cor);
 void desenhaElipse(GLdouble x, GLdouble y, GLdouble *cor);
 
+/* Dispara o movimento de abrir/fechar a boca a cada BT segundos */
+void mexeBocaTimer(int valor);
 
 /* ===Constantes=== */
 #define N_PICADAS 1024
