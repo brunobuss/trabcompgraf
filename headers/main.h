@@ -5,7 +5,7 @@
 #include<stdio.h> /* Para printfs de debug e outras informações :) */
 #include "tresmeios.h"
 #include "movimentos.h"
-
+#include "rostorobo.h"
 
 /* ===Funções=== */
 /* Funcão de inicialização do OpeniGL/GLUT/GLUI */
