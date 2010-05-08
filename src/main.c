@@ -43,6 +43,7 @@ void setupGlut(int *argc, char *argv[])
 
 	glClearColor(0.0, 0.0, 0.0, 0.0); /* Define a cor do GL_COLOR_BUFFER_BIT */
 	glShadeModel(GL_FLAT);
+        glEnable(GL_POINT_SMOOTH);
 
 	glutDisplayFunc(desenhaCallBack);
 	glutReshapeFunc(redimensionaCallBack);
@@ -63,9 +64,6 @@ void desenhaCallBack(void)
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
-        if(!glIsEnabled(GL_POINT_SMOOTH))
-            glEnable(GL_POINT_SMOOTH);
         
 	selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
 	defineCoordenadas(VIEWPORT_SUPERIOR_ESQUERDA);
