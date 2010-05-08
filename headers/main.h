@@ -30,7 +30,7 @@ void timerFPS(int valor);
      = 2 -> superior direito
      = 3 -> inferior esquerdo
      = 4 -> inferior direito */
-void selecionaViewport(int i);
+void selecionaViewport(int viewport);
 
 /* Define os limites das coordenadas que irão aparecer na viewport */
 void defineCoordenadas(int viewport);
