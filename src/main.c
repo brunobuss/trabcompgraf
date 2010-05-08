@@ -64,6 +64,9 @@ void desenhaCallBack(void)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 
+        if(!glIsEnabled(GL_POINT_SMOOTH))
+            glEnable(GL_POINT_SMOOTH);
+        
 	selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
 	defineCoordenadas(VIEWPORT_SUPERIOR_ESQUERDA);
 	glMatrixMode(GL_MODELVIEW);
@@ -91,7 +94,7 @@ void desenhaCallBack(void)
 	glLoadIdentity();
 
 	glColor3f(0.0, 0.0, 1.0);
-	glRectd(-8.0, -8.0, 8.0, 8.0);
+        movimentos(10.0,45,0,0);
 	desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 

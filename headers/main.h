@@ -4,6 +4,7 @@
 #include<GL/glut.h>
 #include<stdio.h> /* Para printfs de debug e outras informações :) */
 #include "tresmeios.h"
+#include "movimentos.h"
 
 
 /* ===Funções=== */
