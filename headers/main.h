@@ -32,14 +32,23 @@ void timerFPS(int valor);
 void selecionaViewport(int i);
 
 /* Define os limites das coordenadas que irão aparecer na viewport */
-void defineCoordenadas(GLdouble inicial, GLdouble final);
+void defineCoordenadas(int viewport);
 
-/* Cria uma borda em torno da área de desenho com espessura tam e cores (red,green,blue) */
-void desenhaBorda(GLdouble inicial, GLdouble final, GLfloat red, GLfloat green, GLfloat blue, GLfloat tam);
+/* Cria uma borda em torno da área viewport, com espessura tam e cores (red,green,blue) */
+void desenhaBorda(int viewport, GLfloat tam);
+
+/* Obtem em qual viewport o mouse causou um evento */
+int viewportPelaPosMouse(GLsizei x, GLsizei y);
+
+/* Modifica as coordenadas da viewport para efeito de zoom in */
+void aplicaZoomViewport(int viewport, int x, int y);
+
+/* Modifica as coordenadas da viewport para efeito de zoom out*/
+void aplicaUnZoomViewport(int viewport);
 
 /* ===Constantes=== */
 /* Indica se o programa deve imprimir informações de debug */
-#define DEBUG 1
+#define DEBUG 0
 
 /* Configurações inicial dos programa */
 #define CONFIG_DISPLAYMODE GLUT_DOUBLE | GLUT_RGB

@@ -2,6 +2,9 @@
 
 int nmax = 10;
 
+int itDesenhar = 10;
+
+
 void desenha3Meios(GLdouble x, GLdouble y, int n, GLdouble lado)
 {
 	GLdouble pax, pay,
@@ -12,7 +15,8 @@ void desenha3Meios(GLdouble x, GLdouble y, int n, GLdouble lado)
 
 	if(n > nmax) return;
 
-	defineCorInterpolada(n, cor);
+	/*if(n == itDesenhar)*/ defineCorInterpolada(n, cor);
+	/*else cor[0] = cor[1] = cor[2] = 0.0; */
 
 	glColor3dv(cor);
 
