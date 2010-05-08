@@ -2,6 +2,11 @@
 
 GLdouble    angMovimento = 0.0;
 
+GLdouble    pax, pay,
+            pbx, pby,
+            pcx, pcy,
+            pdx, pdy;
+
 void movimentos(GLdouble l, GLfloat a, GLfloat d, GLfloat t)
 {
     pax = l * (1.0 / 2.0);
