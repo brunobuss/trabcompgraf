@@ -136,13 +136,10 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_SUPERIOR_ESQUERDA, x, y);
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
-					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_SUPERIOR_DIREITA , x, y);
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
-					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_INFERIOR_ESQUERDA, x, y);
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
-					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_INFERIOR_DIREITA , x, y);
 					break;
 			}
 			break;
@@ -166,13 +163,10 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_SUPERIOR_ESQUERDA);
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
-					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_SUPERIOR_DIREITA );
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
-					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_INFERIOR_ESQUERDA);
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
-					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_INFERIOR_DIREITA );
 					break;
 			}
 			break;
