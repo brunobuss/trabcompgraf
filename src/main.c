@@ -11,7 +11,7 @@ GLdouble razaoY;
 GLdouble vpLimites[4][4] = {    {-10.0, 10.0, -10.0, 10.0},
 				{-30.0, 30.0, -30.0, 30.0},
 				{-10.0, 10.0, -10.0, 10.0},
-				{-10.0, 10.0, -10.0, 10.0}};
+				{ -4.0,  4.0,  -3.0,  5.0}};
 
 GLfloat vpCorBorda[4][3] = {	{1.0, 1.0, 1.0},
 				{1.0, 1.0, 1.0},
@@ -102,8 +102,7 @@ void desenhaCallBack(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glColor3f(1.0, 1.0, 1.0);
-	glRectd(-8.0, -8.0, 8.0, 8.0);
+	desenhaButterfly();
 	desenhaBorda(VIEWPORT_INFERIOR_DIREITA, CONFIG_TAM_BORDA);
 
 
