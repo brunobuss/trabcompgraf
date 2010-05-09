@@ -3,6 +3,7 @@
 
 #include <GL/glut.h>
 #include <math.h>
+#include <stdlib.h>
 #include "debug.h"
 
 /* ===Funções=== */
@@ -26,6 +27,12 @@ void desenhaPicadas();
 
 /* Dispara o movimento de abrir/fechar a boca a cada BT segundos */
 void mexeBocaTimer(int valor);
+
+/* Calcula o movimento dos olhos */
+void movimentaOlhos();
+
+/* Verifica se o olho centrado em p2, esta contido na elipse centrada em p1 */
+int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y);
 
 /* ===Constantes=== */
 #define N_PICADAS 20000

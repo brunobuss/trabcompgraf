@@ -24,6 +24,8 @@ int redesenhaJanela = 1;
 
 int main(int argc, char *argv[])
 {
+	srand(time(NULL));
+
 	setupGlut(&argc, argv);
 	glutMainLoop();
 

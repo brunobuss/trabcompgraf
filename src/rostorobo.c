@@ -17,6 +17,11 @@ int 	BT = 5, /* Segundos entre uma animação de fechar/abrir a boca e outra */
 
 int	nDentes = 5; /* Número de dentes */
 
+GLdouble coordElipses[2][2] = {{-15.0, 10.0}, {15.0, 10.0}};
+GLdouble coordOlhos[2][2] = {{-15.0, 10.0}, {15.0, 10.0}};
+GLdouble movOlhos[2][2] = {{ 0.0, 0.0}, {0.0, 0.0}};
+int frameOlho = 0;
+int qntFrameOlho = 20;
 
 GLfloat  tamPicada = 5.0;	    /* Tam da picada */
 GLdouble picadasCord[N_PICADAS][2]; /* Vetor com as coordenadas das N_PICADAS picadas ;) */
@@ -41,7 +46,7 @@ void adicionaPicada(GLdouble x, GLdouble y, int t)
 
 	if(stateBoca == BOCA_FECHADA) stateBoca = BOCA_ABRINDO;
 
-	printf("Adicionando picada = (%lf, %lf)\n", x, y);
+	DBG(printf("Adicionando picada = (%lf, %lf)\n", x, y));
 
 	qntpicadas++;
 	picadasCord[qntpicadas][PICADA_COORDENADA_X] = x;
@@ -62,18 +67,20 @@ void RostoRobo()
 	desenhaFundoRosto();
 	desenhaPicadas();
 
-	desenhaElipse(-15.0, 10.0, corElipse);
-	desenhaElipse( 15.0, 10.0, corElipse);
+	desenhaElipse(coordElipses[0][0], coordElipses[0][1], corElipse);
+	desenhaElipse(coordElipses[1][0], coordElipses[1][1], corElipse);
+
+	movimentaOlhos();
 
 	if(statePicada == 1)
 	{
-		desenhaCirculo(-15.0, 10.0, corOlhosP);
-		desenhaCirculo( 15.0, 10.0, corOlhosP);
+		desenhaCirculo(coordOlhos[0][0], coordOlhos[0][1], corOlhosP);
+		desenhaCirculo(coordOlhos[1][0], coordOlhos[1][1], corOlhosP);
 	}
 	else
 	{
-		desenhaCirculo(-15.0, 10.0, corOlhosN);
-		desenhaCirculo( 15.0, 10.0, corOlhosN);
+		desenhaCirculo(coordOlhos[0][0], coordOlhos[0][1], corOlhosN);
+		desenhaCirculo(coordOlhos[1][0], coordOlhos[1][1], corOlhosN);
 	}
 	
 	desenhaFundoBoca();
@@ -360,4 +367,95 @@ void mexeBocaTimer(int valor)
 	else if(stateBoca == BOCA_ABERTA) stateBoca = BOCA_FECHANDO;
 
 	timerAtivado = 0;
+}
+
+void movimentaOlhos()
+{
+	int tentativas = 10, i;
+	int angE, angD;
+	double rad;
+	GLdouble dx, dy;
+
+	if(frameOlho == 0)
+	{
+
+		movOlhos[0][0] = movOlhos[0][1] = movOlhos[1][0] = movOlhos[1][1] = 0.0;
+
+		for(i = 0; i < tentativas; i++)
+		{
+			angE = rand()%360;
+			rad = ((double)angE * 3.14159)/180.0;
+
+			dx = cos(rad) * 0.1 * R;
+			dy = sin(rad) * 0.1 * R;
+
+			if(verificaColisao(coordElipses[0][0]   , coordElipses[0][1],
+					   coordOlhos[0][0] + dx, coordOlhos[0][1] + dy))
+			{
+				movOlhos[0][0] = dx;
+				movOlhos[0][1] = dy;
+				break;
+			}
+		}
+
+
+		for(i = 0; i < tentativas; i++)
+		{
+			angD = rand()%360;
+			rad = ((double)angD * 3.14159)/180.0;
+
+			dx = cos(rad) * 0.1 * R;
+			dy = sin(rad) * 0.1 * R;
+
+			if(verificaColisao(coordElipses[1][0]   , coordElipses[1][1],
+					   coordOlhos[1][0] + dx, coordOlhos[1][1] + dy))
+			{
+				movOlhos[1][0] = dx;
+				movOlhos[1][1] = dy;
+				break;
+			}
+		}
+	}
+
+	if(verificaColisao(coordElipses[0][0],
+			   coordElipses[0][1],
+			   coordOlhos[0][0] + movOlhos[0][0],
+                           coordOlhos[0][1] + movOlhos[0][1]))
+	{
+		coordOlhos[0][0] += movOlhos[0][0];
+		coordOlhos[0][1] += movOlhos[0][1];
+	}
+
+	if(verificaColisao(coordElipses[1][0],
+			   coordElipses[1][1],
+			   coordOlhos[1][0] + movOlhos[1][0],
+                           coordOlhos[1][1] + movOlhos[1][1]))
+	{
+		coordOlhos[1][0] += movOlhos[1][0];
+		coordOlhos[1][1] += movOlhos[1][1];
+	}
+
+	frameOlho++;
+	if(frameOlho == qntFrameOlho) frameOlho = 0;
+}
+
+int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y)
+{
+	GLdouble dmax;
+	GLdouble dx, dy, dt;
+
+	if(P <= Q) dmax = P - R;
+	else	   dmax = Q - R;
+
+	dx = p1x - p2x;
+	dx *= dx;
+
+	dy = p1y - p2y;
+	dy *= dy;
+
+	dt = sqrt(dx + dy);
+
+	if(dt >= dmax) return 0;
+	
+	return 1;
 }
