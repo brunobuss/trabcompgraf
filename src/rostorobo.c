@@ -25,7 +25,7 @@ int qntFrameOlho = 20; /* Frames por animação do olho */
 int mousequitoNoRosto = 0;
 GLdouble posMousequitoX, posMousequitoY;
 
-GLfloat  tamPicada = 5.0;	    /* Tam da picada */
+GLfloat  tamPicada = 3.0;	    /* Tam da picada */
 GLdouble picadasCord[N_PICADAS][2]; /* Vetor com as coordenadas das N_PICADAS picadas ;) */
 int	 picadasTipo[N_PICADAS]   ; /* Vetor com o tipo das N_PICADAS picadas ;) */
 int 	 qntpicadas = -1;	/* Quantidade de picadas no rosto do robo */
