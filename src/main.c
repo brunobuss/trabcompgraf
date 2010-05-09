@@ -11,7 +11,7 @@ GLdouble razaoY;
 GLdouble vpLimites[4][4] = {    {-10.0, 10.0, -10.0, 10.0},
 				{-30.0, 30.0, -30.0, 30.0},
 				{-10.0, 10.0, -10.0, 10.0},
-				{ -4.0,  4.0,  -3.0,  5.0}};
+				{-40.0, 40.0, -30.0, 50.0}};
 
 GLfloat vpCorBorda[4][3] = {	{1.0, 1.0, 1.0},
 				{1.0, 1.0, 1.0},
@@ -102,7 +102,7 @@ void desenhaCallBack(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	desenhaButterfly();
+	desenhaCurvas();
 	desenhaBorda(VIEWPORT_INFERIOR_DIREITA, CONFIG_TAM_BORDA);
 
 
@@ -139,6 +139,7 @@ void mouseCallBack(int botao, int estado, int x, int y)
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
+					if(estado == GLUT_DOWN) trocaCurva();
 					break;
 			}
 			break;

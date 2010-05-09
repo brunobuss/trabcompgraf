@@ -7,7 +7,7 @@
 #include "tresmeios.h"
 #include "movimentos.h"
 #include "rostorobo.h"
-#include "butterfly.h"
+#include "curvas.h"
 
 /* ===Funções=== */
 /* Funcão de inicialização do OpeniGL/GLUT/GLUI */
