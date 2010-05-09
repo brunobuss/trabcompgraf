@@ -92,7 +92,7 @@ void desenhaCallBack(void)
 	glLoadIdentity();
 
 	glColor3f(0.0, 0.0, 1.0);
-        movimentos(10.0,45,0,0);
+        movimentos(10.0,45.0,4,0);
 	desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 
