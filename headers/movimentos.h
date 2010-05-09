@@ -5,6 +5,31 @@
 #include <stdio.h>
 #include "debug.h"
 
-void movimentos(GLdouble l, GLfloat a, GLfloat d, GLfloat t);
+/* ===Funções=== */
+
+/* Funções referentes ao trabalho Movimentos */
+
+
+/*
+ *
+ * Função principal que realiza o movimento do quadrado e
+ * da "bolinha"pelas arestas do quadrado.
+ *
+ * A função desenha um quadrado de tamanho "lado" e o faz girar
+ * "ang" graus a cada "tempo" frames, enquanto que uma bola se
+ * desloca "desl" pelas arestas do quadrado no sentido horário
+ */
+
+void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo);
+
+
+/* ===Constantes=== */
+
+
+#define ARESTA_DIREITA      0
+#define ARESTA_INFERIOR     1
+#define ARESTA_ESQUERDA     2
+#define ARESTA_SUPERIOR     3
+#define ARESTA_NULA         4 //Quando o sistema é iniciado.
 
 #endif

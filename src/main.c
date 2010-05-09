@@ -24,6 +24,8 @@ int redesenhaJanela = 1;
 
 int main(int argc, char *argv[])
 {
+	srand(time(NULL));
+
 	setupGlut(&argc, argv);
 	glutMainLoop();
 
@@ -49,6 +51,8 @@ void setupGlut(int *argc, char *argv[])
 	glutReshapeFunc(redimensionaCallBack);
 	glutKeyboardFunc(tecladoCallBack);
 	glutMouseFunc(mouseCallBack);
+	glutMotionFunc(rastreiaMouseCallBack);
+	glutPassiveMotionFunc(rastreiaMouseCallBack);
 	glutIdleFunc(idleCallBack);
 	glutTimerFunc(CONFIG_FPS_TIMER, timerFPS, 1);
 
@@ -92,7 +96,7 @@ void desenhaCallBack(void)
 	glLoadIdentity();
 
 	glColor3f(0.0, 0.0, 1.0);
-        movimentos(10.0,45,0,0);
+        movimentos(10.0,45.0,4,0);
 	desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 
@@ -134,7 +138,6 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
 					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_ESQUERDA);
-					if(estado == GLUT_UP  ) terminouPicada();
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
@@ -142,6 +145,7 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					if(estado == GLUT_DOWN) trocaCurva();
 					break;
 			}
+			if(estado == GLUT_UP  ) terminouPicada();
 			break;
 		case GLUT_MIDDLE_BUTTON:
 			switch(viewportPelaPosMouse(x, y))
@@ -164,16 +168,17 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
 					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_DIREITA);
-					if(estado == GLUT_UP  ) terminouPicada();
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
 					break;
 			}
+			if(estado == GLUT_UP  ) terminouPicada();
 			break;
 		default: break;
         }
+
 }
 
 void redimensionaCallBack(int w, int h)
@@ -187,6 +192,27 @@ void redimensionaCallBack(int w, int h)
 	razaoY = (GLdouble)h/w;
 
 	glutPostRedisplay();
+}
+
+void rastreiaMouseCallBack(int x, int y)
+{
+
+	switch(viewportPelaPosMouse(x, y))
+	{
+		case VIEWPORT_SUPERIOR_ESQUERDA:
+			mousequitoSaiuDoRosto();
+			break;
+		case VIEWPORT_SUPERIOR_DIREITA:
+			mousequito(x, y, SEM_PICADA);		
+			break;
+		case VIEWPORT_INFERIOR_ESQUERDA:
+			mousequitoSaiuDoRosto();
+			break;
+		case VIEWPORT_INFERIOR_DIREITA:
+			mousequitoSaiuDoRosto();
+			break;
+	}
+
 }
 
 void timerFPS(int valor)
@@ -404,6 +430,12 @@ void mousequito(int x, int y, int t)
 
 	if	(tamJanelaX > tamJanelaY) px *= razaoX;
 	else if (tamJanelaY > tamJanelaX) py *= razaoY;
+
+	if(t == SEM_PICADA)
+	{
+		mousequitoNoRostoRobo(px, py);
+		return;
+	}
 
 	if(px > vpLimites[VIEWPORT_SUPERIOR_DIREITA][1] || px < vpLimites[VIEWPORT_SUPERIOR_DIREITA][0] ||
 	   py > vpLimites[VIEWPORT_SUPERIOR_DIREITA][3] || py < vpLimites[VIEWPORT_SUPERIOR_DIREITA][2]) return;
