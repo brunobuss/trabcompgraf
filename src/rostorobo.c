@@ -451,6 +451,21 @@ void movimentaOlhos()
 		coordOlhos[0][0] += movOlhos[0][0];
 		coordOlhos[0][1] += movOlhos[0][1];
 	}
+	else if(verificaColisao(coordElipses[0][0],
+			   coordElipses[0][1],
+			   coordOlhos[0][0] + movOlhos[0][0],
+                           coordOlhos[0][1]))
+	{
+		coordOlhos[0][0] += movOlhos[0][0];
+	}
+	else if(verificaColisao(coordElipses[0][0],
+			   coordElipses[0][1],
+			   coordOlhos[0][0],
+                           coordOlhos[0][1] + movOlhos[0][1]))
+	{
+		coordOlhos[0][1] += movOlhos[0][1];
+	}
+
 
 	if(verificaColisao(coordElipses[1][0],
 			   coordElipses[1][1],
@@ -460,12 +475,27 @@ void movimentaOlhos()
 		coordOlhos[1][0] += movOlhos[1][0];
 		coordOlhos[1][1] += movOlhos[1][1];
 	}
+	else if(verificaColisao(coordElipses[1][0],
+			   coordElipses[1][1],
+			   coordOlhos[1][0] + movOlhos[1][0],
+                           coordOlhos[1][1]))
+	{
+		coordOlhos[1][0] += movOlhos[1][0];
+	}
+	else if(verificaColisao(coordElipses[1][0],
+			   coordElipses[1][1],
+			   coordOlhos[1][0],
+                           coordOlhos[1][1] + movOlhos[1][1]))
+	{
+		coordOlhos[1][1] += movOlhos[1][1];
+	}
 
 	frameOlho++;
 	if(frameOlho == qntFrameOlho) frameOlho = 0;
 }
 
-/*int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y)
+/* Abordagem mais simples:
+int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y)
 {
 	GLdouble dmax;
 	GLdouble dx, dy, dt;
@@ -486,6 +516,7 @@ void movimentaOlhos()
 	return 1;
 }*/
 
+/* Abordagem mais complexa */
 int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y)
 {
 	GLdouble vx[360], vy[360], px, py;
