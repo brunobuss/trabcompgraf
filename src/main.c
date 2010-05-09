@@ -51,6 +51,8 @@ void setupGlut(int *argc, char *argv[])
 	glutReshapeFunc(redimensionaCallBack);
 	glutKeyboardFunc(tecladoCallBack);
 	glutMouseFunc(mouseCallBack);
+	glutMotionFunc(rastreiaMouseCallBack);
+	glutPassiveMotionFunc(rastreiaMouseCallBack);
 	glutIdleFunc(idleCallBack);
 	glutTimerFunc(CONFIG_FPS_TIMER, timerFPS, 1);
 
@@ -189,6 +191,27 @@ void redimensionaCallBack(int w, int h)
 	razaoY = (GLdouble)h/w;
 
 	glutPostRedisplay();
+}
+
+void rastreiaMouseCallBack(int x, int y)
+{
+
+	switch(viewportPelaPosMouse(x, y))
+	{
+		case VIEWPORT_SUPERIOR_ESQUERDA:
+			mousequitoSaiuDoRosto();
+			break;
+		case VIEWPORT_SUPERIOR_DIREITA:
+			mousequito(x, y, SEM_PICADA);		
+			break;
+		case VIEWPORT_INFERIOR_ESQUERDA:
+			mousequitoSaiuDoRosto();
+			break;
+		case VIEWPORT_INFERIOR_DIREITA:
+			mousequitoSaiuDoRosto();
+			break;
+	}
+
 }
 
 void timerFPS(int valor)
@@ -406,6 +429,12 @@ void mousequito(int x, int y, int t)
 
 	if	(tamJanelaX > tamJanelaY) px *= razaoX;
 	else if (tamJanelaY > tamJanelaX) py *= razaoY;
+
+	if(t == SEM_PICADA)
+	{
+		mousequitoNoRostoRobo(px, py);
+		return;
+	}
 
 	if(px > vpLimites[VIEWPORT_SUPERIOR_DIREITA][1] || px < vpLimites[VIEWPORT_SUPERIOR_DIREITA][0] ||
 	   py > vpLimites[VIEWPORT_SUPERIOR_DIREITA][3] || py < vpLimites[VIEWPORT_SUPERIOR_DIREITA][2]) return;

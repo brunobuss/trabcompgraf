@@ -22,6 +22,8 @@ GLdouble coordOlhos[2][2] = {{-15.0, 10.0}, {15.0, 10.0}};
 GLdouble movOlhos[2][2] = {{ 0.0, 0.0}, {0.0, 0.0}};
 int frameOlho = 0;
 int qntFrameOlho = 20;
+int mousequitoNoRosto = 0;
+GLdouble posMousequitoX, posMousequitoY;
 
 GLfloat  tamPicada = 5.0;	    /* Tam da picada */
 GLdouble picadasCord[N_PICADAS][2]; /* Vetor com as coordenadas das N_PICADAS picadas ;) */
@@ -374,46 +376,70 @@ void movimentaOlhos()
 	int tentativas = 10, i;
 	int angE, angD;
 	double rad;
-	GLdouble dx, dy;
+	GLdouble dx, dy, dist;
 
 	if(frameOlho == 0)
 	{
 
 		movOlhos[0][0] = movOlhos[0][1] = movOlhos[1][0] = movOlhos[1][1] = 0.0;
 
-		for(i = 0; i < tentativas; i++)
+		if(mousequitoNoRosto == 0)
 		{
-			angE = rand()%360;
-			rad = ((double)angE * 3.14159)/180.0;
 
-			dx = cos(rad) * 0.1 * R;
-			dy = sin(rad) * 0.1 * R;
-
-			if(verificaColisao(coordElipses[0][0]   , coordElipses[0][1],
-					   coordOlhos[0][0] + dx, coordOlhos[0][1] + dy))
+			for(i = 0; i < tentativas; i++)
 			{
-				movOlhos[0][0] = dx;
-				movOlhos[0][1] = dy;
-				break;
+				angE = rand()%360;
+				rad = ((double)angE * 3.14159)/180.0;
+
+				dx = cos(rad) * 0.1 * R;
+				dy = sin(rad) * 0.1 * R;
+
+				if(verificaColisao(coordElipses[0][0]   , coordElipses[0][1],
+						   coordOlhos[0][0] + dx, coordOlhos[0][1] + dy))
+				{
+					movOlhos[0][0] = dx;
+					movOlhos[0][1] = dy;
+					break;
+				}
+			}
+
+
+			for(i = 0; i < tentativas; i++)
+			{
+				angD = rand()%360;
+				rad = ((double)angD * 3.14159)/180.0;
+
+				dx = cos(rad) * 0.1 * R;
+				dy = sin(rad) * 0.1 * R;
+
+				if(verificaColisao(coordElipses[1][0]   , coordElipses[1][1],
+						   coordOlhos[1][0] + dx, coordOlhos[1][1] + dy))
+				{
+					movOlhos[1][0] = dx;
+					movOlhos[1][1] = dy;
+					break;
+				}
 			}
 		}
-
-
-		for(i = 0; i < tentativas; i++)
+		else if(mousequitoNoRosto == 1)
 		{
-			angD = rand()%360;
-			rad = ((double)angD * 3.14159)/180.0;
+			dx = posMousequitoX - coordOlhos[0][0];
+			dy = posMousequitoY - coordOlhos[0][1];
 
-			dx = cos(rad) * 0.1 * R;
-			dy = sin(rad) * 0.1 * R;
+			dist = sqrt(dx * dx + dy * dy);
 
-			if(verificaColisao(coordElipses[1][0]   , coordElipses[1][1],
-					   coordOlhos[1][0] + dx, coordOlhos[1][1] + dy))
-			{
-				movOlhos[1][0] = dx;
-				movOlhos[1][1] = dy;
-				break;
-			}
+			movOlhos[0][0] = (dx / dist) * 0.05 * R;
+			movOlhos[0][1] = (dy / dist) * 0.05 * R;
+
+
+
+			dx = posMousequitoX - coordOlhos[1][0];
+			dy = posMousequitoY - coordOlhos[1][1];
+
+			dist = sqrt(dx * dx + dy * dy);
+
+			movOlhos[1][0] = (dx / dist) * 0.05 * R;
+			movOlhos[1][1] = (dy / dist) * 0.05 * R;
 		}
 	}
 
@@ -458,4 +484,17 @@ int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y)
 	if(dt >= dmax) return 0;
 	
 	return 1;
+}
+
+void mousequitoNoRostoRobo(GLdouble x, GLdouble y)
+{
+	DBG(printf("Mousequito no rosto em (%lf, %lf)\n", x, y));
+	posMousequitoX = x;
+	posMousequitoY = y;
+	mousequitoNoRosto = 1;
+}
+
+void mousequitoSaiuDoRosto()
+{
+	mousequitoNoRosto = 0;
 }
