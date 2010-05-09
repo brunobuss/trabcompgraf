@@ -21,7 +21,7 @@ GLdouble coordElipses[2][2] = {{-15.0, 10.0}, {15.0, 10.0}};
 GLdouble coordOlhos[2][2] = {{-15.0, 10.0}, {15.0, 10.0}};
 GLdouble movOlhos[2][2] = {{ 0.0, 0.0}, {0.0, 0.0}};
 int frameOlho = 0;
-int qntFrameOlho = 20;
+int qntFrameOlho = 20; /* Frames por animação do olho */
 int mousequitoNoRosto = 0;
 GLdouble posMousequitoX, posMousequitoY;
 
@@ -30,6 +30,14 @@ GLdouble picadasCord[N_PICADAS][2]; /* Vetor com as coordenadas das N_PICADAS pi
 int	 picadasTipo[N_PICADAS]   ; /* Vetor com o tipo das N_PICADAS picadas ;) */
 int 	 qntpicadas = -1;	/* Quantidade de picadas no rosto do robo */
 int	 statePicada = 0;
+int	 numPicadasParaRage = 20; /* Numeros de picada para o RostoRobo ficar enfurecido */
+int	 roboRage = 0;
+GLdouble corOlhosRAGE1[3] = {1.0, 0.0, 0.0},
+	 corOlhosRAGE2[3] = {0.0, 1.0, 0.0},
+	 corOlhosRAGE3[3] = {0.0, 0.0, 1.0};
+GLdouble corDentesRAGE[3][3] = {{1.0, 1.0, 1.0},
+				{0.0, 0.0, 0.0},
+				{0.5, 0.5, 0.5}};
 
 /* Estado da animação da boca:
    0 = fechada, parada;
@@ -55,6 +63,10 @@ void adicionaPicada(GLdouble x, GLdouble y, int t)
 	picadasCord[qntpicadas][PICADA_COORDENADA_Y] = y;
 	picadasTipo[qntpicadas]			     = t;
 	statePicada = 1;
+	if((qntpicadas + 1) % numPicadasParaRage == 0)
+	{
+		roboRage = 1;
+	}
 
 }
 
@@ -76,13 +88,65 @@ void RostoRobo()
 
 	if(statePicada == 1)
 	{
-		desenhaCirculo(coordOlhos[0][0], coordOlhos[0][1], corOlhosP);
-		desenhaCirculo(coordOlhos[1][0], coordOlhos[1][1], corOlhosP);
+		if(roboRage == 0)
+		{
+			desenhaCirculo(coordOlhos[0][0], coordOlhos[0][1], corOlhosP);
+			desenhaCirculo(coordOlhos[1][0], coordOlhos[1][1], corOlhosP);
+		}
+		else if(roboRage <= 3)
+		{
+			desenhaCirculo(coordOlhos[0][0], coordOlhos[0][1], corOlhosRAGE1);
+			desenhaCirculo(coordOlhos[1][0], coordOlhos[1][1], corOlhosRAGE2);
+			roboRage++;
+
+			if(stateBoca == BOCA_FECHADA ||
+			   stateBoca == BOCA_ABERTA)
+			{
+				BF = 5;
+				BT = 1;
+			}
+		}
+		else if(roboRage <= 6)
+		{
+			desenhaCirculo(coordOlhos[0][0], coordOlhos[0][1], corOlhosRAGE2);
+			desenhaCirculo(coordOlhos[1][0], coordOlhos[1][1], corOlhosRAGE3);
+			roboRage++;
+
+			if(stateBoca == BOCA_FECHADA ||
+			   stateBoca == BOCA_ABERTA)
+			{
+				BF = 5;
+				BT = 1;
+			}
+		}
+		else if(roboRage <= 9)
+		{
+			desenhaCirculo(coordOlhos[0][0], coordOlhos[0][1], corOlhosRAGE3);
+			desenhaCirculo(coordOlhos[1][0], coordOlhos[1][1], corOlhosRAGE1);
+			roboRage++;
+
+			if(stateBoca == BOCA_FECHADA ||
+			   stateBoca == BOCA_ABERTA)
+			{
+				BF = 5;
+				BT = 1;
+			}
+			if(roboRage == 10) roboRage = 1;
+		}
+
+		
 	}
 	else
 	{
 		desenhaCirculo(coordOlhos[0][0], coordOlhos[0][1], corOlhosN);
 		desenhaCirculo(coordOlhos[1][0], coordOlhos[1][1], corOlhosN);
+		roboRage = 0;
+		
+		if(stateBoca == BOCA_FECHADA || stateBoca == BOCA_ABERTA)
+		{
+			BF = 30;
+			BT = 5;
+		}
 	}
 	
 	desenhaFundoBoca();
@@ -143,7 +207,11 @@ void desenhaDentes()
 		case BOCA_ABRINDO:
 			for(i = 0; i < nDentes; i++) /*Dentes de baixo */
 			{
-				glColor3dv(corDentes);
+				if(roboRage >= 1)
+				{
+					glColor3dv(corDentesRAGE[(i + roboRage)%3]);
+				}
+				else glColor3dv(corDentes);
 
 				glBegin(GL_POLYGON);
 					glVertex2d(-10.0 + i     * largdentes, -30.0);
@@ -165,7 +233,11 @@ void desenhaDentes()
 			}
 			for(i = 0; i < nDentes; i++) /*Dentes de cima */
 			{
-				glColor3dv(corDentes);
+				if(roboRage >= 1)
+				{
+					glColor3dv(corDentesRAGE[(i + roboRage)%3]);
+				}
+				else glColor3dv(corDentes);
 
 				glBegin(GL_POLYGON);
 					glVertex2d(-10.0 + i     * largdentes, -10.0);
@@ -191,7 +263,11 @@ void desenhaDentes()
 		case BOCA_FECHADA:
 			for(i = 0; i < nDentes; i++) /*Dentes de baixo */
 			{
-				glColor3dv(corDentes);
+				if(roboRage >= 1)
+				{
+					glColor3dv(corDentesRAGE[(i + roboRage)%3]);
+				}
+				else glColor3dv(corDentes);
 
 				glBegin(GL_POLYGON);
 					glVertex2d(-10.0 + i     * largdentes, -30.0);
@@ -213,7 +289,12 @@ void desenhaDentes()
 			}
 			for(i = 0; i < nDentes; i++) /*Dentes de cima */
 			{
-				glColor3dv(corDentes);
+				if(roboRage >= 1)
+				{
+					glColor3dv(corDentesRAGE[(i + roboRage)%3]);
+				}
+				else glColor3dv(corDentes);
+
 
 				glBegin(GL_POLYGON);
 					glVertex2d(-10.0 + i     * largdentes, -10.0);
@@ -239,7 +320,11 @@ void desenhaDentes()
 		case BOCA_FECHANDO:
 			for(i = 0; i < nDentes; i++) /*Dentes de baixo */
 			{
-				glColor3dv(corDentes);
+				if(roboRage >= 1)
+				{
+					glColor3dv(corDentesRAGE[(i + roboRage)%3]);
+				}
+				else glColor3dv(corDentes);
 
 				glBegin(GL_POLYGON);
 					glVertex2d(-10.0 + i     * largdentes, -30.0);
@@ -262,7 +347,11 @@ void desenhaDentes()
 
 			for(i = 0; i < nDentes; i++) /*Dentes de cima */
 			{
-				glColor3dv(corDentes);
+				if(roboRage >= 1)
+				{
+					glColor3dv(corDentesRAGE[(i + roboRage)%3]);
+				}
+				else glColor3dv(corDentes);
 
 				glBegin(GL_POLYGON);
 					glVertex2d(-10.0 + i     * largdentes, -10.0);
@@ -428,8 +517,8 @@ void movimentaOlhos()
 
 			dist = sqrt(dx * dx + dy * dy);
 
-			movOlhos[0][0] = (dx / dist) * 0.05 * R;
-			movOlhos[0][1] = (dy / dist) * 0.05 * R;
+			movOlhos[0][0] = (dx / dist) * 0.1 * R;
+			movOlhos[0][1] = (dy / dist) * 0.1 * R;
 
 
 
@@ -438,8 +527,8 @@ void movimentaOlhos()
 
 			dist = sqrt(dx * dx + dy * dy);
 
-			movOlhos[1][0] = (dx / dist) * 0.05 * R;
-			movOlhos[1][1] = (dy / dist) * 0.05 * R;
+			movOlhos[1][0] = (dx / dist) * 0.1 * R;
+			movOlhos[1][1] = (dy / dist) * 0.1 * R;
 		}
 	}
 

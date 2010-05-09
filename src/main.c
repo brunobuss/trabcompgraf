@@ -139,13 +139,13 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
 					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_ESQUERDA);
-					if(estado == GLUT_UP  ) terminouPicada();
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
 					break;
 			}
+			if(estado == GLUT_UP  ) terminouPicada();
 			break;
 		case GLUT_MIDDLE_BUTTON:
 			switch(viewportPelaPosMouse(x, y))
@@ -168,16 +168,17 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
 					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_DIREITA);
-					if(estado == GLUT_UP  ) terminouPicada();
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
 					break;
 			}
+			if(estado == GLUT_UP  ) terminouPicada();
 			break;
 		default: break;
         }
+
 }
 
 void redimensionaCallBack(int w, int h)
