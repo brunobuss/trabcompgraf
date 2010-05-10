@@ -24,6 +24,8 @@ int redesenhaJanela = 1;
 
 int main(int argc, char *argv[])
 {
+	srand(time(NULL));
+
 	setupGlut(&argc, argv);
 	glutMainLoop();
 
@@ -49,6 +51,8 @@ void setupGlut(int *argc, char *argv[])
 	glutReshapeFunc(redimensionaCallBack);
 	glutKeyboardFunc(tecladoCallBack);
 	glutMouseFunc(mouseCallBack);
+	glutMotionFunc(rastreiaMouseCallBack);
+	glutPassiveMotionFunc(rastreiaMouseCallBack);
 	glutIdleFunc(idleCallBack);
 	glutTimerFunc(CONFIG_FPS_TIMER, timerFPS, 1);
 
@@ -135,13 +139,13 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
 					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_ESQUERDA);
-					if(estado == GLUT_UP  ) terminouPicada();
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
 					break;
 			}
+			if(estado == GLUT_UP  ) terminouPicada();
 			break;
 		case GLUT_MIDDLE_BUTTON:
 			switch(viewportPelaPosMouse(x, y))
@@ -164,16 +168,17 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
 					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_DIREITA);
-					if(estado == GLUT_UP  ) terminouPicada();
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
 					break;
 			}
+			if(estado == GLUT_UP  ) terminouPicada();
 			break;
 		default: break;
         }
+
 }
 
 void redimensionaCallBack(int w, int h)
@@ -187,6 +192,27 @@ void redimensionaCallBack(int w, int h)
 	razaoY = (GLdouble)h/w;
 
 	glutPostRedisplay();
+}
+
+void rastreiaMouseCallBack(int x, int y)
+{
+
+	switch(viewportPelaPosMouse(x, y))
+	{
+		case VIEWPORT_SUPERIOR_ESQUERDA:
+			mousequitoSaiuDoRosto();
+			break;
+		case VIEWPORT_SUPERIOR_DIREITA:
+			mousequito(x, y, SEM_PICADA);		
+			break;
+		case VIEWPORT_INFERIOR_ESQUERDA:
+			mousequitoSaiuDoRosto();
+			break;
+		case VIEWPORT_INFERIOR_DIREITA:
+			mousequitoSaiuDoRosto();
+			break;
+	}
+
 }
 
 void timerFPS(int valor)
@@ -349,7 +375,7 @@ void aplicaZoomViewport(int viewport, int x, int y)
 	scaleX = diferencaX / 4.0;
 	scaleY = diferencaY / 4.0; 
 
-	DBG(printf("Novo Centro = (%lf %lf)\n sX = %lf sY = %lf\n", novoCentroX, novoCentroY, scaleX, scaleY));
+	DBG(printf("Zoom In na viewport %d:\nNovo Centro = (%lf %lf)\n sX = %lf sY = %lf\n", viewport, novoCentroX, novoCentroY, scaleX, scaleY));
 
 
 	vpLimites[viewport][0] = novoCentroX - scaleX;
@@ -374,7 +400,7 @@ void aplicaUnZoomViewport(int viewport)
 	scaleX = diferencaX;
 	scaleY = diferencaY; 
 
-	DBG(printf("Novo Centro = (%lf %lf)\n sX = %lf sY = %lf\n", novoCentroX, novoCentroY, scaleX, scaleY));
+	DBG(printf("Zoom Out na viewport %d:\nNovo Centro = (%lf %lf)\n sX = %lf sY = %lf\n", viewport, novoCentroX, novoCentroY, scaleX, scaleY));
 
 
 	vpLimites[viewport][0] = novoCentroX - scaleX;
@@ -404,6 +430,12 @@ void mousequito(int x, int y, int t)
 
 	if	(tamJanelaX > tamJanelaY) px *= razaoX;
 	else if (tamJanelaY > tamJanelaX) py *= razaoY;
+
+	if(t == SEM_PICADA)
+	{
+		mousequitoNoRostoRobo(px, py);
+		return;
+	}
 
 	if(px > vpLimites[VIEWPORT_SUPERIOR_DIREITA][1] || px < vpLimites[VIEWPORT_SUPERIOR_DIREITA][0] ||
 	   py > vpLimites[VIEWPORT_SUPERIOR_DIREITA][3] || py < vpLimites[VIEWPORT_SUPERIOR_DIREITA][2]) return;

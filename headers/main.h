@@ -1,8 +1,10 @@
 #ifndef H_MAIN
 #define H_MAIN
 
-#include<GL/glut.h>
-#include<stdio.h> /* Para printfs de debug e outras informações :) */
+#include <GL/glut.h>
+#include <stdio.h> /* Para printfs de debug e outras informações :) */
+#include <stdlib.h>
+#include <time.h>
 #include "debug.h"
 #include "tresmeios.h"
 #include "movimentos.h"
@@ -22,6 +24,8 @@ void tecladoCallBack(unsigned char tecla, int x, int y);
 void mouseCallBack(int button, int state, int x, int y);
 /* Redimensionamento da janela */
 void redimensionaCallBack(int w, int h);
+/* Rastreia a posição do mouse na janela */
+void rastreiaMouseCallBack(int x, int y);
 /* Temporizador responsavel pelo controle da contagem de FPS */
 void timerFPS(int valor);
 

@@ -3,6 +3,7 @@
 
 #include <GL/glut.h>
 #include <math.h>
+#include <stdlib.h>
 #include "debug.h"
 
 /* ===Funções=== */
@@ -27,6 +28,16 @@ void desenhaPicadas();
 /* Dispara o movimento de abrir/fechar a boca a cada BT segundos */
 void mexeBocaTimer(int valor);
 
+/* Calcula o movimento dos olhos */
+void movimentaOlhos();
+
+/* Verifica se o olho centrado em p2, esta contido na elipse centrada em p1 */
+int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y);
+
+/* Funções para que os olhos do robo possam seguir o mouse */
+void mousequitoNoRostoRobo(GLdouble x, GLdouble y);
+void mousequitoSaiuDoRosto();
+
 /* ===Constantes=== */
 #define N_PICADAS 20000
 
@@ -38,6 +49,7 @@ void mexeBocaTimer(int valor);
 #define PICADA_COORDENADA_X 0
 #define PICADA_COORDENADA_Y 1
 
+#define SEM_PICADA      0
 #define PICADA_ESQUERDA 1
 #define PICADA_DIREITA  2
 
