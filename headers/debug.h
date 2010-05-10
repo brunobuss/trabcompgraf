@@ -4,7 +4,7 @@
 #include "stdio.h"
 
 /* Indica se o programa deve imprimir informações de debug */
-#define DEBUG 0
+#define DEBUG 1
 
 /* Macros */
 #define DBG(x) if(DEBUG) { x; }
