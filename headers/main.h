@@ -1,10 +1,14 @@
 #ifndef H_MAIN
 #define H_MAIN
 
-#include<GL/glut.h>
-#include<stdio.h> /* Para printfs de debug e outras informações :) */
+#include <GL/glut.h>
+#include <stdio.h> /* Para printfs de debug e outras informações :) */
+#include <stdlib.h>
+#include <time.h>
+#include "debug.h"
 #include "tresmeios.h"
-
+#include "movimentos.h"
+#include "rostorobo.h"
 
 /* ===Funções=== */
 /* Funcão de inicialização do OpeniGL/GLUT/GLUI */
@@ -20,6 +24,8 @@ void tecladoCallBack(unsigned char tecla, int x, int y);
 void mouseCallBack(int button, int state, int x, int y);
 /* Redimensionamento da janela */
 void redimensionaCallBack(int w, int h);
+/* Rastreia a posição do mouse na janela */
+void rastreiaMouseCallBack(int x, int y);
 /* Temporizador responsavel pelo controle da contagem de FPS */
 void timerFPS(int valor);
 
@@ -29,7 +35,7 @@ void timerFPS(int valor);
      = 2 -> superior direito
      = 3 -> inferior esquerdo
      = 4 -> inferior direito */
-void selecionaViewport(int i);
+void selecionaViewport(int viewport);
 
 /* Define os limites das coordenadas que irão aparecer na viewport */
 void defineCoordenadas(int viewport);
@@ -46,10 +52,11 @@ void aplicaZoomViewport(int viewport, int x, int y);
 /* Modifica as coordenadas da viewport para efeito de zoom out*/
 void aplicaUnZoomViewport(int viewport);
 
-/* ===Constantes=== */
-/* Indica se o programa deve imprimir informações de debug */
-#define DEBUG 0
+/* Ativa o mousequito na viewport 2 */
+void mousequito(int x, int y, int t);
 
+
+/* ===Constantes=== */
 /* Configurações inicial dos programa */
 #define CONFIG_DISPLAYMODE GLUT_DOUBLE | GLUT_RGB
 #define CONFIG_TAMHOR_INICIAL 500
@@ -68,9 +75,6 @@ void aplicaUnZoomViewport(int viewport);
 #define VIEWPORT_INFERIOR_DIREITA  3
 
 #define CONFIG_TAM_BORDA 1.0
-
-/* Macros */
-#define DBG(x) if(DEBUG) { x; }
 
 
 #endif /* H-MAIN */

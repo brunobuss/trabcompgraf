@@ -9,7 +9,7 @@ GLdouble razaoY;
 
 /* Configuração das Viewports */
 GLdouble vpLimites[4][4] = {    {-10.0, 10.0, -10.0, 10.0},
-				{-10.0, 10.0, -10.0, 10.0},
+				{-30.0, 30.0, -30.0, 30.0},
 				{-10.0, 10.0, -10.0, 10.0},
 				{-10.0, 10.0, -10.0, 10.0}};
 
@@ -24,6 +24,8 @@ int redesenhaJanela = 1;
 
 int main(int argc, char *argv[])
 {
+	srand(time(NULL));
+
 	setupGlut(&argc, argv);
 	glutMainLoop();
 
@@ -43,11 +45,14 @@ void setupGlut(int *argc, char *argv[])
 
 	glClearColor(0.0, 0.0, 0.0, 0.0); /* Define a cor do GL_COLOR_BUFFER_BIT */
 	glShadeModel(GL_FLAT);
+        glEnable(GL_POINT_SMOOTH);
 
 	glutDisplayFunc(desenhaCallBack);
 	glutReshapeFunc(redimensionaCallBack);
 	glutKeyboardFunc(tecladoCallBack);
 	glutMouseFunc(mouseCallBack);
+	glutMotionFunc(rastreiaMouseCallBack);
+	glutPassiveMotionFunc(rastreiaMouseCallBack);
 	glutIdleFunc(idleCallBack);
 	glutTimerFunc(CONFIG_FPS_TIMER, timerFPS, 1);
 
@@ -63,7 +68,7 @@ void desenhaCallBack(void)
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
+        
 	selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
 	defineCoordenadas(VIEWPORT_SUPERIOR_ESQUERDA);
 	glMatrixMode(GL_MODELVIEW);
@@ -80,7 +85,7 @@ void desenhaCallBack(void)
 	glLoadIdentity();
 
 	glColor3f(0.0, 1.0, 0.0);
-	glRectd(-8.0, -8.0, 8.0, 8.0);
+	RostoRobo();
 	desenhaBorda(VIEWPORT_SUPERIOR_DIREITA, CONFIG_TAM_BORDA);
 
 
@@ -91,7 +96,7 @@ void desenhaCallBack(void)
 	glLoadIdentity();
 
 	glColor3f(0.0, 0.0, 1.0);
-	glRectd(-8.0, -8.0, 8.0, 8.0);
+        movimentos(10.0,45.0,4,0);
 	desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 
@@ -133,15 +138,14 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_SUPERIOR_ESQUERDA, x, y);
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
-					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_SUPERIOR_DIREITA , x, y);
+					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_ESQUERDA);
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
-					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_INFERIOR_ESQUERDA, x, y);
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
-					if(estado == GLUT_DOWN) aplicaZoomViewport(VIEWPORT_INFERIOR_DIREITA , x, y);
 					break;
 			}
+			if(estado == GLUT_UP  ) terminouPicada();
 			break;
 		case GLUT_MIDDLE_BUTTON:
 			switch(viewportPelaPosMouse(x, y))
@@ -163,18 +167,18 @@ void mouseCallBack(int botao, int estado, int x, int y)
 					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_SUPERIOR_ESQUERDA);
 					break;
 				case VIEWPORT_SUPERIOR_DIREITA:
-					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_SUPERIOR_DIREITA );
+					if(estado == GLUT_DOWN) mousequito(x, y, PICADA_DIREITA);
 					break;
 				case VIEWPORT_INFERIOR_ESQUERDA:
-					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_INFERIOR_ESQUERDA);
 					break;
 				case VIEWPORT_INFERIOR_DIREITA:
-					if(estado == GLUT_DOWN) aplicaUnZoomViewport(VIEWPORT_INFERIOR_DIREITA );
 					break;
 			}
+			if(estado == GLUT_UP  ) terminouPicada();
 			break;
 		default: break;
         }
+
 }
 
 void redimensionaCallBack(int w, int h)
@@ -188,6 +192,27 @@ void redimensionaCallBack(int w, int h)
 	razaoY = (GLdouble)h/w;
 
 	glutPostRedisplay();
+}
+
+void rastreiaMouseCallBack(int x, int y)
+{
+
+	switch(viewportPelaPosMouse(x, y))
+	{
+		case VIEWPORT_SUPERIOR_ESQUERDA:
+			mousequitoSaiuDoRosto();
+			break;
+		case VIEWPORT_SUPERIOR_DIREITA:
+			mousequito(x, y, SEM_PICADA);		
+			break;
+		case VIEWPORT_INFERIOR_ESQUERDA:
+			mousequitoSaiuDoRosto();
+			break;
+		case VIEWPORT_INFERIOR_DIREITA:
+			mousequitoSaiuDoRosto();
+			break;
+	}
+
 }
 
 void timerFPS(int valor)
@@ -230,7 +255,7 @@ void selecionaViewport(int viewport)
 
 void defineCoordenadas(int viewport)
 {
-	GLdouble deslocXi = 0.0, deslocXf = 0.0, deslocYi = 0.0, deslocYf = 0.0;
+	/*GLdouble deslocXi = 0.0, deslocXf = 0.0, deslocYi = 0.0, deslocYf = 0.0;
 
 	if(razaoX > 1.0) deslocXi = vpLimites[viewport][0] * (1.0 - razaoX);
 	if(vpLimites[viewport][0] >= 0.0) deslocXi *= -1.0;
@@ -244,13 +269,22 @@ void defineCoordenadas(int viewport)
 	if(razaoY > 1.0) deslocYf = vpLimites[viewport][3] * (1.0 - razaoY);
 	if(vpLimites[viewport][3] < 0.0) deslocYf *= -1.0;
 
-	gluOrtho2D(vpLimites[viewport][0] + deslocXi, vpLimites[viewport][1] + deslocXf, vpLimites[viewport][2] + deslocYi, vpLimites[viewport][3] + deslocYf);
+	gluOrtho2D(vpLimites[viewport][0] + deslocXi, vpLimites[viewport][1] + deslocXf, vpLimites[viewport][2] + deslocYi, vpLimites[viewport][3] + deslocYf);*/
 
+ 
+	if(tamJanelaX == tamJanelaY)	gluOrtho2D(vpLimites[viewport][0]         , vpLimites[viewport][1]         ,
+						   vpLimites[viewport][2]	  , vpLimites[viewport][3]);
+
+	else if(tamJanelaX > tamJanelaY)gluOrtho2D(vpLimites[viewport][0] * razaoX, vpLimites[viewport][1] * razaoX,
+						   vpLimites[viewport][2]	  , vpLimites[viewport][3]);
+
+ 	else				gluOrtho2D(vpLimites[viewport][0]         , vpLimites[viewport][1]         ,
+						   vpLimites[viewport][2] * razaoY, vpLimites[viewport][3] * razaoY);
 }
 
 void desenhaBorda(int viewport, GLfloat tam)
 {
-	GLdouble deslocXi = 0.0, deslocXf = 0.0, deslocYi = 0.0, deslocYf = 0.0;
+	/*GLdouble deslocXi = 0.0, deslocXf = 0.0, deslocYi = 0.0, deslocYf = 0.0;
 
 	if(razaoX > 1.0) deslocXi = vpLimites[viewport][0] * (1.0 - razaoX);
 	if(vpLimites[viewport][0] >= 0.0) deslocXi *= -1.0;
@@ -275,8 +309,36 @@ void desenhaBorda(int viewport, GLfloat tam)
 		glVertex2f(vpLimites[viewport][1] + deslocXf, vpLimites[viewport][3] + deslocYf);
 		glVertex2f(vpLimites[viewport][1] + deslocXf, vpLimites[viewport][2] + deslocYi);
 		glVertex2f(vpLimites[viewport][0] + deslocXi, vpLimites[viewport][2] + deslocYi);
-	glEnd();
+	glEnd();*/
 
+	GLdouble xi = vpLimites[viewport][0],
+		 xf = vpLimites[viewport][1],
+		 yi = vpLimites[viewport][2],
+		 yf = vpLimites[viewport][3];
+
+	if(tam <= 0.01) tam = 1.0;
+
+	if(tamJanelaX > tamJanelaY)
+	{
+		xi *= razaoX;
+		xf *= razaoX;
+	}
+	else
+	{
+		yi *= razaoY;
+		yf *= razaoY;
+	}
+
+	glColor3f(vpCorBorda[viewport][0], vpCorBorda[viewport][1], vpCorBorda[viewport][2]);
+	glLineWidth(tam);
+
+	glBegin(GL_LINE_STRIP);
+		glVertex2f(xi, yi);
+		glVertex2f(xi, yf);
+		glVertex2f(xf, yf);
+		glVertex2f(xf, yi);
+		glVertex2f(xi, yi);		
+	glEnd();
 }
 
 int viewportPelaPosMouse(GLsizei x, GLsizei y)
@@ -347,4 +409,36 @@ void aplicaUnZoomViewport(int viewport)
 	vpLimites[viewport][3] = novoCentroY + scaleY;
 
 	redesenhaJanela = 1;
+}
+
+void mousequito(int x, int y, int t)
+{
+	GLdouble diferencaX, diferencaY;
+        GLsizei meioX = tamJanelaX/2;
+        GLsizei meioY = tamJanelaY/2;
+	GLdouble rX, rY;	
+	GLdouble px, py;
+
+	rX = (GLdouble) (x - meioX)/meioX;
+	rY = (GLdouble) ((tamJanelaY - y) - meioY)/meioY;
+
+	diferencaX = vpLimites[VIEWPORT_SUPERIOR_DIREITA][1] - vpLimites[VIEWPORT_SUPERIOR_DIREITA][0];
+	diferencaY = vpLimites[VIEWPORT_SUPERIOR_DIREITA][3] - vpLimites[VIEWPORT_SUPERIOR_DIREITA][2];
+
+	px = vpLimites[VIEWPORT_SUPERIOR_DIREITA][0] + (rX  * diferencaX);
+	py = vpLimites[VIEWPORT_SUPERIOR_DIREITA][2] + (rY  * diferencaY);
+
+	if	(tamJanelaX > tamJanelaY) px *= razaoX;
+	else if (tamJanelaY > tamJanelaX) py *= razaoY;
+
+	if(t == SEM_PICADA)
+	{
+		mousequitoNoRostoRobo(px, py);
+		return;
+	}
+
+	if(px > vpLimites[VIEWPORT_SUPERIOR_DIREITA][1] || px < vpLimites[VIEWPORT_SUPERIOR_DIREITA][0] ||
+	   py > vpLimites[VIEWPORT_SUPERIOR_DIREITA][3] || py < vpLimites[VIEWPORT_SUPERIOR_DIREITA][2]) return;
+
+	adicionaPicada(px, py, t);
 }

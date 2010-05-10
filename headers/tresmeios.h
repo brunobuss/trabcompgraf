@@ -3,6 +3,7 @@
 
 #include<GL/glut.h>
 #include<math.h>
+#include "debug.h"
 
 /* ===Funções=== */
 
@@ -13,7 +14,7 @@ void desenha3Meios(GLdouble x, GLdouble y, int n, GLdouble lado);
 void defineCorInterpolada(int n, GLdouble *p);
 
 
-/* Constantes */
+/* ===Constantes=== */
 
 /* Como o número de operações é O(3^N), 
    para N > 12 a eficiência do programa fica seriamente
