@@ -7,13 +7,13 @@ GLdouble    angMovimento = 0.0;
 //Inicializador da bola
 int         arestaBolinha = ARESTA_NULA;
 
-GLdouble    vetorCaminho[1000][3];
+GLdouble    vetorCaminho[1500][2];
 
 //Contador para ser usado no vetor
 int         contCaminho = 0;
 
 //Pontos da "Bola"
-GLdouble    by,bx;
+GLdouble    by, bx;
 
 void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
 {
@@ -26,7 +26,7 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
 
     GLdouble    corQuad[3]      = {1.0, 1.0, 0.0},
                 corBola[3]      = {0.25, 0.35, 0.8},
-                corCaminho[3]   = {1.0, 0.0, 0.0};
+                corCaminho[3]   = {0.15, 0.15, 0.5};
 
     int i = 0;
     
@@ -43,16 +43,13 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
     pdx = lado * (1.0 / 2.0);
     pdy = -1.0 * lado * (1.0 / 2.0);
 
-    
-
-    //DBG(printf("vetorCaminho %ld\n", sizeof(vetorCaminho)));
    
     //SETANDO AS COORDENADAS DA BOLA
     switch (arestaBolinha)
     {
         case ARESTA_DIREITA:
             by  -= desl/10.0;            
-            if(by < pdy)
+            if(by <= pdy)
             {
                 bx = pdx - (by - pdy);
                 by = pdy;
@@ -72,7 +69,7 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
             break;
         case ARESTA_ESQUERDA:
             by  += desl/10.0;
-            if(by > pby)
+            if(by >= pby)
             {
                 bx = pbx + (by - pby);
                 by = pby;
@@ -82,7 +79,7 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
             break;
         case ARESTA_SUPERIOR:
             bx  += desl/10.0;
-            if(bx > pax)
+            if(bx >= pax)
             {
                 by = pay - (bx - pax);
                 bx = pax;
@@ -98,6 +95,9 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
             break;
     }
 
+    if(glIsEnabled(GL_POINT_SMOOTH))
+        glEnable(GL_POINT_SMOOTH);
+
     //CONTROLE DO MOVIMENTO
     angMovimento += ang / 10.0;
 
@@ -105,11 +105,35 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
         angMovimento += 360;
     else if((angMovimento > 360)&&(ang > 0))
         angMovimento -= 360;
-
-
     
+    
+    //ADICIONANDO OS PONTOS DA BOLA PARA O RASTRO DO CAMINHO
+    if(contCaminho < 1500)
+    {
+        setPontosBola(contCaminho, angMovimento, bx, by);
+        DBG(printf("X %lf Y %lf ANG %lf\n", vetorCaminho[contCaminho][0],vetorCaminho[contCaminho][1], vetorCaminho[contCaminho][2]));
+        contCaminho++;
+    }
+
+    if(contCaminho)
+    {
+        glPointSize(2.0);
+        glColor3dv(corCaminho);
+        
+        glBegin(GL_LINES);
+        
+        for(i = 1; i < contCaminho; i++)
+        {
+            glVertex2d(vetorCaminho[i-1][0], vetorCaminho[i-1][1]);
+            glVertex2d(vetorCaminho[i][0], vetorCaminho[i][1]);   
+        }
+
+        glEnd();
+        
+    }
+
     //DESENHANDO O QUADRADO
-    // DBG(printf("l: %lf pax: %lf pay: %lf angMovimento: %lf\n", lado,pax,pay, angMovimento));
+    DBG(printf("l: %lf pax: %lf pay: %lf angMovimento: %lf\n", lado,pax,pay, angMovimento));
     glPushMatrix();
     glRotatef(angMovimento,0.0,0.0,1.0);
     glLineWidth(1.5);
@@ -122,50 +146,22 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
     glEnd();
     glPopMatrix();
 
-    if(!glIsEnabled(GL_POINT_SMOOTH))
-        glEnable(GL_POINT_SMOOTH);
-
     //DESENHANDO A BOLA
-    //DBG(printf("Aresta: %d bx %lf by: %lf\n", arestaBolinha, bx, by));
+    DBG(printf("Aresta: %d bx %lf by: %lf\n", arestaBolinha, bx, by));
     glPointSize(6.0);
     glPushMatrix();
     glRotatef(angMovimento,0.0,0.0,1.0);
     glColor3dv(corBola);
-    glBegin(GL_POINTS); 
+    glBegin(GL_POINTS);
         glVertex2d(bx,by);
     glEnd();
     glPopMatrix();
 
-    //ADICIONANDO OS PONTOS DA BOLA PARA O RASTRO DO CAMINHO
-    if(contCaminho < 1000)
-    {
-        vetorCaminho[contCaminho][0] = bx;
-        vetorCaminho[contCaminho][1] = by;
-        vetorCaminho[contCaminho][2] = angMovimento;
-        DBG(printf("X %lf Y %lf ANG %lf\n", vetorCaminho[contCaminho][0],vetorCaminho[contCaminho][1], vetorCaminho[contCaminho][2]));
-        contCaminho++;
-    }
+}
 
-    if(contCaminho)
-    {
-        glPointSize(2.0);
-        glColor3dv(corCaminho);
-        
-        
-        
-        for(i = 1; i < contCaminho; i++)
-        {
-            glPushMatrix();
-            glRotatef(vetorCaminho[i-1][2],0.0,0.0,1.0);
-            glBegin(GL_LINES);
-                glVertex2d(vetorCaminho[i-1][0], vetorCaminho[i-1][1]);
-                glVertex2d(vetorCaminho[i][0], vetorCaminho[i][1]);
-            glEnd();
-            glPopMatrix();
-            
-        }
-            //  glVertex2d(vetorCaminho[0][0], vetorCaminho[0][1]);
-        
-        
-    }
+void setPontosBola(int i, GLdouble angulo, GLdouble posx, GLdouble posy)
+{
+    vetorCaminho[i][0] = bx * cos(((float) 3.14159/180) * angulo) - by * sin(((float) 3.14159/180) * angulo);
+    vetorCaminho[i][1] = bx * sin(((float) 3.14159/180) * angulo) + by * cos(((float) 3.14159/180) * angulo);
+    vetorCaminho[i][2] = angMovimento;
 }

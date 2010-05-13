@@ -25,6 +25,7 @@
 
 void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo);
 
+void setPontosBola(int i, GLdouble angulo, GLdouble posx, GLdouble posy);
 
 /* ===Constantes=== */
 
