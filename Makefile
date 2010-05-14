@@ -1,22 +1,22 @@
 all: linux
 
 linux: main tresmeios rostorobo movimentos curvas headers/debug.h
-	gcc -o trabalho1compgraf_linux main.o tresmeios.o movimentos.o rostorobo.o curvas.o -lglut -lGLU -lm -O2
+	gcc -o trabalho1compgraf_linux -lglut -lGLU -lm -O2 -Wall -Wextra main.o tresmeios.o movimentos.o rostorobo.o curvas.o 
 
 main: src/main.c headers/main.h
-	gcc -c -o main.o src/main.c -O2 -Wall
+	gcc -c -o main.o -O2 -Wall -Wextra src/main.c 
 
 tresmeios: src/tresmeios.c headers/tresmeios.h
-	gcc -c -o tresmeios.o src/tresmeios.c -O2 -Wall
+	gcc -c -o tresmeios.o -O2 -Wall -Wextra src/tresmeios.c
 
 rostorobo: src/rostorobo.c headers/rostorobo.h
-	gcc -c -o movimentos.o src/movimentos.c -O2 -Wall
+	gcc -c -o movimentos.o -O2 -Wall -Wextra src/movimentos.c
 
 movimentos: src/movimentos.c headers/movimentos.h
-	gcc -c -o rostorobo.o src/rostorobo.c -O2 -Wall
+	gcc -c -o rostorobo.o -O2 -Wall -Wextra src/rostorobo.c
 
 curvas: src/curvas.c headers/curvas.h
-	gcc -c -o curvas.o src/curvas.c
+	gcc -c -o curvas.o -O2 -Wall -Wextra src/curvas.c
 
 #win: src/main.c headers/main.h
 
