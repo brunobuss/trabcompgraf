@@ -19,7 +19,7 @@ void desenhaCurvas()
 {
 	int i;
 	GLdouble u;
-	GLdouble px, py, lx, ly;
+	GLdouble px, py;
 	GLdouble corCurva[3];
 
 	glPushMatrix();
