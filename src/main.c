@@ -110,6 +110,7 @@ void desenhaCallBack(void)
 		glLoadIdentity();
 
         	movimentos(10.0, 45.0, -1 ,0);
+        	movimentos(10.0, 5.0, -1 ,0);
 		desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 
