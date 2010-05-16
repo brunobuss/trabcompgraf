@@ -7,7 +7,7 @@ GLdouble    angMovimento = 0.0;
 //Inicializador da bola
 int         arestaBolinha = ARESTA_NULA;
 
-GLdouble    vetorCaminho[1500][2];
+GLdouble    vetorCaminho[1500][3];
 
 //Contador para ser usado no vetor
 int         contCaminho = 0;
@@ -29,6 +29,8 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
                 corCaminho[3]   = {0.15, 0.15, 0.5};
 
     int i = 0;
+    
+    ang *= -1.0;
     
     //SETANDO AS COORDENADAS DOS VERTICES DO QUADRADO
     pax = lado * (1.0 / 2.0);
@@ -73,7 +75,7 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
             }
             else if(bx >= pdx)
             {
-                by = pdy + (pdx - bx);
+                by = pdy + (bx - pdx);
                 bx = pdx;
                 arestaBolinha   = ARESTA_DIREITA;
             }	    
@@ -120,9 +122,6 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
             break;
     }
 
-    if(glIsEnabled(GL_POINT_SMOOTH))
-        glEnable(GL_POINT_SMOOTH);
-
     //CONTROLE DO MOVIMENTO
     angMovimento += ang / 10.0;
 
@@ -130,6 +129,7 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
         angMovimento += 360;
     else if((angMovimento > 360)&&(ang > 0))
         angMovimento -= 360;
+    
     
     
     //ADICIONANDO OS PONTOS DA BOLA PARA O RASTRO DO CAMINHO
