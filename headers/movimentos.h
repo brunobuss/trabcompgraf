@@ -25,7 +25,9 @@
 
 void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo);
 
-void setPontosBola(int i, GLdouble angulo, GLdouble posx, GLdouble posy);
+void setPontosBola(int i, GLdouble angulo);
+
+void apagaRastro();
 
 /* ===Constantes=== */
 

@@ -11,6 +11,7 @@ GLdouble    vetorCaminho[1500][2];
 
 //Contador para ser usado no vetor
 int         contCaminho = 0;
+int         contVolta   = 0;
 
 //Pontos da "Bola"
 GLdouble    by, bx;
@@ -24,9 +25,11 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
 
     
 
-    GLdouble    corQuad[3]      = {1.0, 1.0, 0.0},
-                corBola[3]      = {0.25, 0.35, 0.8},
-                corCaminho[3]   = {0.15, 0.15, 0.5};
+    GLdouble    corQuad[3]          = {1.0, 1.0, 0.0},
+                corBola[3]         = {0.25, 0.35, 0.8},
+                corCaminho[3][3]   = {  {0.15, 0.15, 0.50},
+                                        {0.00, 0.15, 0.15},
+                                        {0.15, 0.00, 0.50}};
 
     int i = 0;
     
@@ -135,7 +138,7 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
     //ADICIONANDO OS PONTOS DA BOLA PARA O RASTRO DO CAMINHO
     if(contCaminho < 1500)
     {
-        setPontosBola(contCaminho, angMovimento, bx, by);
+        setPontosBola(contCaminho, angMovimento);
         DBG(printf("X %lf Y %lf ANG %lf\n", vetorCaminho[contCaminho][0],vetorCaminho[contCaminho][1], vetorCaminho[contCaminho][2]));
         contCaminho++;
     }
@@ -184,9 +187,14 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
 
 }
 
-void setPontosBola(int i, GLdouble angulo, GLdouble posx, GLdouble posy)
+void setPontosBola(int i, GLdouble angulo)
 {
     vetorCaminho[i][0] = bx * cos(((float) 3.14159/180) * angulo) - by * sin(((float) 3.14159/180) * angulo);
     vetorCaminho[i][1] = bx * sin(((float) 3.14159/180) * angulo) + by * cos(((float) 3.14159/180) * angulo);
     vetorCaminho[i][2] = angMovimento;
+}
+
+void apagaRastro()
+{
+    contCaminho = 0;
 }

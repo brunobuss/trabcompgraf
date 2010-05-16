@@ -109,7 +109,7 @@ void desenhaCallBack(void)
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-        	movimentos(10.0, 0.0, -1 ,0);
+        	movimentos(10.0, 45.0, -1 ,0);
 		desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 
@@ -146,7 +146,7 @@ void tecladoCallBack(unsigned char tecla, int x, int y)
 	
 	if	(tecla == 82 || tecla == 114) resetaZoomViewport1(); //R ou r
 	else if (tecla == 76 || tecla == 108) apagaPicadasRostoRobo(); //L ou l
-	else if (tecla == 65 || tecla ==  79) ; //A ou a
+	else if (tecla == 65 || tecla ==  97) apagaRastro(); //A ou a
 	else if (tecla == 84 || tecla == 116) trocaCurva(); //T ou t
 }
 
