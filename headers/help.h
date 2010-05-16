@@ -6,7 +6,7 @@
 
 /* ===Funções=== */
 
-/* Funções referentes ao trabalho 3 meios */
+/* Funções referentes a tela de menu */
 
 void desenhaHelp();
 
