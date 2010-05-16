@@ -639,7 +639,14 @@ void mousequitoNoRostoRobo(GLdouble x, GLdouble y)
 	mousequitoNoRosto = 1;
 }
 
-void mousequitoSaiuDoRosto()
+void mousequitoSaiuDoRosto(void)
 {
 	mousequitoNoRosto = 0;
+}
+
+void apagaPicadasRostoRobo(void)
+{
+	qntpicadas = -1;
+	statePicada = 0;
+	roboRage = 0;
 }

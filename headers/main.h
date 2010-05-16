@@ -54,6 +54,9 @@ void aplicaZoomViewport(int viewport, int x, int y);
 /* Modifica as coordenadas da viewport para efeito de zoom out*/
 void aplicaUnZoomViewport(int viewport);
 
+/* Reseta zoom da viewport esquerda superior */
+void resetaZoomViewport1(void);
+
 /* Ativa o mousequito na viewport 2 */
 void mousequito(int x, int y, int t);
 

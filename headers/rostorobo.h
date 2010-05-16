@@ -38,6 +38,9 @@ int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y);
 void mousequitoNoRostoRobo(GLdouble x, GLdouble y);
 void mousequitoSaiuDoRosto();
 
+/* Função para apagar todas as picadas do RostoRobo */
+void apagaPicadasRostoRobo(void);
+
 /* ===Constantes=== */
 #define N_PICADAS 20000
 

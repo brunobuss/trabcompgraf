@@ -141,6 +141,13 @@ void tecladoCallBack(unsigned char tecla, int x, int y)
 		if(mostraHelp == 0)     mostraHelp = 1;
 		else			mostraHelp = 0;
 	}
+	
+	if(mostraHelp == 1) return;
+	
+	if	(tecla == 82 || tecla == 114) resetaZoomViewport1(); //R ou r
+	else if (tecla == 76 || tecla == 108) apagaPicadasRostoRobo(); //L ou l
+	else if (tecla == 65 || tecla ==  79) ; //A ou a
+	else if (tecla == 84 || tecla == 116) trocaCurva(); //T ou t
 }
 
 void mouseCallBack(int botao, int estado, int x, int y)
@@ -436,6 +443,14 @@ void aplicaUnZoomViewport(int viewport)
 	vpLimites[viewport][3] = novoCentroY + scaleY;
 
 	redesenhaJanela = 1;
+}
+
+void resetaZoomViewport1(void)
+{
+	vpLimites[VIEWPORT_SUPERIOR_ESQUERDA][0] = -10.0;
+	vpLimites[VIEWPORT_SUPERIOR_ESQUERDA][1] =  10.0;
+	vpLimites[VIEWPORT_SUPERIOR_ESQUERDA][2] = -10.0;
+	vpLimites[VIEWPORT_SUPERIOR_ESQUERDA][3] =  10.0;
 }
 
 void mousequito(int x, int y, int t)
