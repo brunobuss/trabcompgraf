@@ -30,7 +30,15 @@ int id_janela;
 /* Parâmetros das chamadas das animações */
 /* 3 Meios */
 float	 	vp1_param_lado = 14.0;
-
+/* Movimentos */
+float		vp3_param_lado =  10.0;
+float		vp3_param_ang  =   5.0;
+float		vp3_param_desl =  -1.0;
+int		vp3_nframes    =  1;
+int		vp3_pframes    =  20; 
+int		vp3_desenhaQuadrado    =   1; 
+int		vp3_desenhaBolinha     =   1; 
+int		vp3_desenhaRastro      =   1; 
 
 int main(int argc, char *argv[])
 {
@@ -80,14 +88,22 @@ void setupMenu()
 	GLUI_Panel *painelViewportInferiorEsquerda;
 	GLUI_Panel *painelViewportInferiorDireita;
 	GLUI_Spinner *vp1_lado;
-
+	GLUI_Spinner *vp3_lado;
+	GLUI_Spinner *vp3_ang;
+	GLUI_Spinner *vp3_desl;
+	GLUI_Spinner *vp3_frames;	
+	GLUI_Panel   *vp3_desenha;
+	
 	initMenu();
 	menu = objetoMenu();
 
+	/* Cabecalho */
 	menu->add_statictext("Trabalho 1 de Computacao Grafica 2010/1");
 	menu->add_statictext("Criado por: Bruno C. Buss e Diego Cardoso");
 	menu->add_statictext("Aperte H para o Help sobre as funcionalidades da janela");
 
+	
+	/* Viewport 1 */
 	painelViewportSuperiorEsquerda = menu->add_panel("Viewport 1: 3 Meios");
 		
 	vp1_lado = menu->add_spinner_to_panel(painelViewportSuperiorEsquerda, "Lado:" , GLUI_SPINNER_FLOAT, &vp1_param_lado);
@@ -96,12 +112,35 @@ void setupMenu()
 	menuParametros3Meios(menu, painelViewportSuperiorEsquerda);
 	
 	
+	
+	/* Viewport 2 */
 	painelViewportSuperiorDireita = menu->add_panel("Viewport 2: RostoRobo");
 	
 	
+	/* Viewport 3 */
 	painelViewportInferiorEsquerda = menu->add_panel("Viewport 3: Composicao de Movimentos");
 	
+	vp3_lado = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Lado do quadrado:" , GLUI_SPINNER_FLOAT, &vp3_param_lado);
+	vp3_lado->set_float_limits(1.0, 14.0, GLUI_LIMIT_CLAMP);
 	
+	vp3_ang = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Angulo de rotação:" , GLUI_SPINNER_FLOAT, &vp3_param_ang);
+	vp3_ang->set_float_limits(-360, 360, GLUI_LIMIT_CLAMP);
+	
+	vp3_desl = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Deslocamento da bolinha:" , GLUI_SPINNER_FLOAT, &vp3_param_desl);
+	vp3_desl->set_float_limits(-10, 10, GLUI_LIMIT_CLAMP);
+
+	vp3_frames = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Frames por redesenho:" , GLUI_SPINNER_INT, &vp3_nframes);
+	vp3_frames->set_int_limits(1, 50, GLUI_LIMIT_CLAMP);
+	
+	vp3_desenha = menu->add_panel_to_panel(painelViewportInferiorEsquerda, "Desenha:");
+	menu->add_checkbox_to_panel(vp3_desenha, "Quadrado", &vp3_desenhaQuadrado);
+	menu->add_column_to_panel(vp3_desenha, false);
+	menu->add_checkbox_to_panel(vp3_desenha, "Bolinha", &vp3_desenhaBolinha);
+	menu->add_column_to_panel(vp3_desenha, false);
+	menu->add_checkbox_to_panel(vp3_desenha, "Rastro", &vp3_desenhaRastro);		
+	
+	
+	/* Viewport 4 */
 	painelViewportInferiorDireita = menu->add_panel("Viewport 4: Curvas");
 	
 	
@@ -139,7 +178,17 @@ void desenhaCallBack(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-        movimentos(10.0, 5.0, -1 ,0);
+	vp3_pframes++;
+	if(vp3_pframes >= vp3_nframes)
+	{
+		movimentos(vp3_param_lado, vp3_param_ang, vp3_param_desl, 1, vp3_desenhaQuadrado, vp3_desenhaBolinha, vp3_desenhaRastro);
+		vp3_pframes = 0;
+	}
+	else
+	{
+		movimentos(vp3_param_lado, vp3_param_ang, vp3_param_desl, 0, vp3_desenhaQuadrado, vp3_desenhaBolinha, vp3_desenhaRastro);
+	}
+        
 	desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 

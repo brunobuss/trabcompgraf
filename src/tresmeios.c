@@ -88,6 +88,4 @@ void menuParametros3Meios(GLUI *menu, GLUI_Panel *painel)
 	menu->add_checkbox_to_panel(p_cFinal, "Verde", &cor_final_verde);
 	menu->add_column_to_panel(p_cFinal, false);
 	menu->add_checkbox_to_panel(p_cFinal, "Azul", &cor_final_azul);	
-	
-	
 }

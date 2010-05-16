@@ -23,7 +23,7 @@
  * desloca "desl" pelas arestas do quadrado no sentido horário
  */
 
-void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo);
+void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, int movimenta, int desenhaQuadrado, int desenhaBola, int desenhaRastro);
 
 void setPontosBola(int i, GLdouble angulo, int cor);
 
@@ -31,6 +31,7 @@ void apagaRastro();
 
 /* ===Constantes=== */
 
+#define TAM_FILA 10240
 
 #define ARESTA_DIREITA      0
 #define ARESTA_INFERIOR     1
