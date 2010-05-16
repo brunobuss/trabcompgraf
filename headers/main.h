@@ -1,6 +1,7 @@
 #ifndef H_MAIN
 #define H_MAIN
 
+#include <GL/glui.h>
 #include <GL/glut.h>
 #include <stdio.h> /* Para printfs de debug e outras informações :) */
 #include <stdlib.h>
@@ -11,10 +12,14 @@
 #include "rostorobo.h"
 #include "curvas.h"
 #include "help.h"
+#include "menu.h"
 
 /* ===Funções=== */
 /* Funcão de inicialização do OpeniGL/GLUT/GLUI */
 void setupGlut(int *argc, char *argv[]);
+
+/* Função para criação do menu em GLUI */
+void setupMenu();
 
 /* Ciclo de redraw da janela */
 void desenhaCallBack(void);

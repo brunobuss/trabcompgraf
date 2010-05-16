@@ -1,7 +1,8 @@
 #ifndef H_HELP
 #define H_HELP
 
-#include<GL/glut.h>
+#include <GL/glui.h>
+#include <GL/glut.h>
 #include "debug.h"
 
 /* ===Funções=== */

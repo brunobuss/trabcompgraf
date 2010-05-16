@@ -24,12 +24,16 @@ GLfloat vpCorBorda[5][3] = {	{1.0, 1.0, 1.0},
 int redesenhaJanela = 1;
 int mostraHelp	    = 0;
 
+/* Referencia a nossa janela do GLUT, necessário devido ao GLUI */
+int id_janela;
 
 int main(int argc, char *argv[])
 {
 	srand(time(NULL));
 
 	setupGlut(&argc, argv);
+	setupMenu();
+	
 	glutMainLoop();
 
 	return 0;
@@ -44,7 +48,7 @@ void setupGlut(int *argc, char *argv[])
 	glutInitDisplayMode(CONFIG_DISPLAYMODE);
 	glutInitWindowSize(tamJanelaX, tamJanelaY);
 	glutInitWindowPosition(CONFIG_POSX_INICIAL, CONFIG_POSY_INICIAL);
-	glutCreateWindow(CONFIG_TITULO_JANELA);
+	id_janela = glutCreateWindow(CONFIG_TITULO_JANELA);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0); /* Define a cor do GL_COLOR_BUFFER_BIT */
 	glShadeModel(GL_FLAT);
@@ -58,17 +62,27 @@ void setupGlut(int *argc, char *argv[])
 	glutMouseFunc(mouseCallBack);
 	glutMotionFunc(rastreiaMouseCallBack);
 	glutPassiveMotionFunc(rastreiaMouseCallBack);
-	glutIdleFunc(idleCallBack);
 	glutTimerFunc(CONFIG_FPS_TIMER, timerFPS, 1);
+	
+	GLUI_Master.set_glutIdleFunc(idleCallBack);
 
 	DBG(printf("...GLUT configurado com sucesso\n"));
+}
+
+void setupMenu()
+{
+	GLUI *menu;
+
+	initMenu();
+	menu = objetoMenu();
+	
+	
+	menu->set_main_gfx_window(id_janela);
 }
 
 void desenhaCallBack(void)
 {
 	DBG(printf("Redesenhando a tela...\n"));
-	redesenhaJanela = 0;
-
 	glClear(GL_COLOR_BUFFER_BIT);
         
 	selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
@@ -131,6 +145,7 @@ void idleCallBack()
 	if(redesenhaJanela == 1)
 	{
 		redesenhaJanela = 0;
+		glutSetWindow(id_janela);
 		glutPostRedisplay();
 	}
 }
