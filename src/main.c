@@ -8,18 +8,21 @@ GLdouble razaoX;
 GLdouble razaoY;
 
 /* Configuração das Viewports */
-GLdouble vpLimites[4][4] = {    {-10.0, 10.0, -10.0, 10.0},
-				{-30.0, 30.0, -30.0, 30.0},
-				{-10.0, 10.0, -10.0, 10.0},
-				{-40.0, 40.0, -30.0, 50.0}};
+GLdouble vpLimites[5][4] = {    {-10.0,  10.0, -10.0,  10.0},
+				{-30.0,  30.0, -30.0,  30.0},
+				{-10.0,  10.0, -10.0,  10.0},
+				{-40.0,  40.0, -30.0,  50.0},
+				{  0.0, 450.0,   0.0, 450.0}};
 
-GLfloat vpCorBorda[4][3] = {	{1.0, 1.0, 1.0},
+GLfloat vpCorBorda[5][3] = {	{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
 				{1.0, 1.0, 1.0},
 				{1.0, 1.0, 1.0},
 				{1.0, 1.0, 1.0}};
 
 
 int redesenhaJanela = 1;
+int mostraHelp	    = 0;
 
 
 int main(int argc, char *argv[])
@@ -67,48 +70,58 @@ void desenhaCallBack(void)
 	redesenhaJanela = 0;
 
 	glClear(GL_COLOR_BUFFER_BIT);
-
         
-	selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
-	defineCoordenadas(VIEWPORT_SUPERIOR_ESQUERDA);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	
+	if(mostraHelp == 1)
+	{
+		selecionaViewport(VIEWPORT_HELP);
+		defineCoordenadas(VIEWPORT_HELP);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 
-	desenha3Meios(0.0, 0.0, 0, 14.0);
-	desenhaBorda(VIEWPORT_SUPERIOR_ESQUERDA, CONFIG_TAM_BORDA);
+		desenhaHelp();
+		desenhaBorda(VIEWPORT_HELP, CONFIG_TAM_BORDA);	  
+	}
+	else
+	{
+		selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
+		defineCoordenadas(VIEWPORT_SUPERIOR_ESQUERDA);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 
-
-
-	selecionaViewport(VIEWPORT_SUPERIOR_DIREITA);
-	defineCoordenadas(VIEWPORT_SUPERIOR_DIREITA);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	glColor3f(0.0, 1.0, 0.0);
-	RostoRobo();
-	desenhaBorda(VIEWPORT_SUPERIOR_DIREITA, CONFIG_TAM_BORDA);
-
-
-
-	selecionaViewport(VIEWPORT_INFERIOR_ESQUERDA);
-	defineCoordenadas(VIEWPORT_INFERIOR_ESQUERDA);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	glColor3f(0.0, 0.0, 1.0);
-        movimentos(10.0,-45.0, 4 ,0);
-	desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
+		desenha3Meios(0.0, 0.0, 0, 14.0);
+		desenhaBorda(VIEWPORT_SUPERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 
 
-	selecionaViewport(VIEWPORT_INFERIOR_DIREITA);
-	defineCoordenadas(VIEWPORT_INFERIOR_DIREITA);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+		selecionaViewport(VIEWPORT_SUPERIOR_DIREITA);
+		defineCoordenadas(VIEWPORT_SUPERIOR_DIREITA);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 
-	desenhaCurvas();
-	desenhaBorda(VIEWPORT_INFERIOR_DIREITA, CONFIG_TAM_BORDA);
+		RostoRobo();
+		desenhaBorda(VIEWPORT_SUPERIOR_DIREITA, CONFIG_TAM_BORDA);
 
+
+
+		selecionaViewport(VIEWPORT_INFERIOR_ESQUERDA);
+		defineCoordenadas(VIEWPORT_INFERIOR_ESQUERDA);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+        	movimentos(10.0,-45.0, 4 ,0);
+		desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
+
+
+
+		selecionaViewport(VIEWPORT_INFERIOR_DIREITA);
+		defineCoordenadas(VIEWPORT_INFERIOR_DIREITA);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		desenhaCurvas();
+		desenhaBorda(VIEWPORT_INFERIOR_DIREITA, CONFIG_TAM_BORDA);
+	}
 
 	glutSwapBuffers();
 
@@ -122,12 +135,20 @@ void idleCallBack()
 void tecladoCallBack(unsigned char tecla, int x, int y)
 {
 	DBG(printf("Acao do teclado detectada: tecla = %d x = %d u = %d\n", tecla, x, y));
+	
+	if(tecla == 72 || tecla == 104) //h e H
+	{
+		if(mostraHelp == 0)     mostraHelp = 1;
+		else			mostraHelp = 0;
+	}
 }
 
 void mouseCallBack(int botao, int estado, int x, int y)
 {
 	DBG(printf("Acao do mouse detectada: botao = %d estado = %d x = %d u = %d\n", botao, estado, x, y));
 
+	if(mostraHelp == 1) return;
+	
 	switch (botao)
 	{
 		case GLUT_LEFT_BUTTON:
@@ -196,7 +217,9 @@ void redimensionaCallBack(int w, int h)
 
 void rastreiaMouseCallBack(int x, int y)
 {
-
+	if(mostraHelp == 1) return;
+  
+  
 	switch(viewportPelaPosMouse(x, y))
 	{
 		case VIEWPORT_SUPERIOR_ESQUERDA:
@@ -245,6 +268,9 @@ void selecionaViewport(int viewport)
 		case VIEWPORT_INFERIOR_DIREITA :
 			glViewport(meioX, 0, meioX, meioY);
 			break;
+		case VIEWPORT_HELP:
+			glViewport(0, 0, tamJanelaX, tamJanelaY);
+			break;			
 	}
 
 	glMatrixMode(GL_PROJECTION);
@@ -360,6 +386,7 @@ void aplicaZoomViewport(int viewport, int x, int y)
 	GLsizei meioX = tamJanelaX/2;
 	GLsizei meioY = tamJanelaY/2;
 
+	
 	y = tamJanelaY - y;
 
 

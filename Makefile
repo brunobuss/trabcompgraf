@@ -1,7 +1,7 @@
 all: linux
 
-linux: main tresmeios rostorobo movimentos curvas headers/debug.h
-	gcc -o trabalho1compgraf_linux -fwhole-program -lglut -lGLU -lm -O2 -Wall -Wextra main.o tresmeios.o movimentos.o rostorobo.o curvas.o 
+linux: main tresmeios rostorobo movimentos curvas help headers/debug.h
+	gcc -o trabalho1compgraf_linux -fwhole-program -lglut -lGLU -lm -O2 -Wall -Wextra main.o tresmeios.o movimentos.o rostorobo.o curvas.o help.o
 
 main: src/main.c headers/main.h
 	gcc -c -o main.o -O2 -Wall -Wextra src/main.c 
@@ -18,6 +18,9 @@ movimentos: src/movimentos.c headers/movimentos.h
 curvas: src/curvas.c headers/curvas.h
 	gcc -c -o curvas.o -O2 -Wall -Wextra src/curvas.c
 
+help: src/help.c headers/help.h
+	gcc -c -o help.o -O2 -Wall -Wextra src/help.c
+
 #win: src/main.c headers/main.h
 
 clean: 
@@ -27,3 +30,4 @@ clean:
 	rm movimentos.o
 	rm rostorobo.o
 	rm curvas.o
+	rm help.o

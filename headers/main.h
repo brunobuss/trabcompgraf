@@ -10,6 +10,7 @@
 #include "movimentos.h"
 #include "rostorobo.h"
 #include "curvas.h"
+#include "help.h"
 
 /* ===Funções=== */
 /* Funcão de inicialização do OpeniGL/GLUT/GLUI */
@@ -74,6 +75,7 @@ void mousequito(int x, int y, int t);
 #define VIEWPORT_SUPERIOR_DIREITA  1
 #define VIEWPORT_INFERIOR_ESQUERDA 2
 #define VIEWPORT_INFERIOR_DIREITA  3
+#define VIEWPORT_HELP  4
 
 #define CONFIG_TAM_BORDA 1.0
 
