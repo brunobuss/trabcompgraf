@@ -583,28 +583,6 @@ void movimentaOlhos()
 	if(frameOlho == qntFrameOlho) frameOlho = 0;
 }
 
-/* Abordagem mais simples:
-int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y)
-{
-	GLdouble dmax;
-	GLdouble dx, dy, dt;
-
-	if(P <= Q) dmax = P - R;
-	else	   dmax = Q - R;
-
-	dx = p1x - p2x;
-	dx *= dx;
-
-	dy = p1y - p2y;
-	dy *= dy;
-
-	dt = sqrt(dx + dy);
-
-	if(dt >= dmax) return 0;
-	
-	return 1;
-}*/
-
 /* Abordagem mais complexa */
 int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y)
 {

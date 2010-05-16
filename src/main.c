@@ -287,24 +287,7 @@ void selecionaViewport(int viewport)
 }
 
 void defineCoordenadas(int viewport)
-{
-	/*GLdouble deslocXi = 0.0, deslocXf = 0.0, deslocYi = 0.0, deslocYf = 0.0;
-
-	if(razaoX > 1.0) deslocXi = vpLimites[viewport][0] * (1.0 - razaoX);
-	if(vpLimites[viewport][0] >= 0.0) deslocXi *= -1.0;
-
-	if(razaoY > 1.0) deslocYi = vpLimites[viewport][2] * (1.0 - razaoY);
-	if(vpLimites[viewport][2] >= 0.0) deslocYi *= -1.0;
- 
-	if(razaoX > 1.0) deslocXf = vpLimites[viewport][1] * (1.0 - razaoX);
-	if(vpLimites[viewport][1] < 0.0) deslocXf *= -1.0;
-
-	if(razaoY > 1.0) deslocYf = vpLimites[viewport][3] * (1.0 - razaoY);
-	if(vpLimites[viewport][3] < 0.0) deslocYf *= -1.0;
-
-	gluOrtho2D(vpLimites[viewport][0] + deslocXi, vpLimites[viewport][1] + deslocXf, vpLimites[viewport][2] + deslocYi, vpLimites[viewport][3] + deslocYf);*/
-
- 
+{ 
 	if(tamJanelaX == tamJanelaY)	gluOrtho2D(vpLimites[viewport][0]         , vpLimites[viewport][1]         ,
 						   vpLimites[viewport][2]	  , vpLimites[viewport][3]);
 
@@ -317,33 +300,6 @@ void defineCoordenadas(int viewport)
 
 void desenhaBorda(int viewport, GLfloat tam)
 {
-	/*GLdouble deslocXi = 0.0, deslocXf = 0.0, deslocYi = 0.0, deslocYf = 0.0;
-
-	if(razaoX > 1.0) deslocXi = vpLimites[viewport][0] * (1.0 - razaoX);
-	if(vpLimites[viewport][0] >= 0.0) deslocXi *= -1.0;
-
-	if(razaoY > 1.0) deslocYi = vpLimites[viewport][2] * (1.0 - razaoY);
-	if(vpLimites[viewport][2] >= 0.0) deslocYi *= -1.0;
- 
-	if(razaoX > 1.0) deslocXf = vpLimites[viewport][1] * (1.0 - razaoX);
-	if(vpLimites[viewport][1] < 0.0) deslocXf *= -1.0;
-
-	if(razaoY > 1.0) deslocYf = vpLimites[viewport][3] * (1.0 - razaoY);
-	if(vpLimites[viewport][3] < 0.0) deslocYf *= -1.0;
-
-	if(tam < 0.01) tam = 1.0;
-
-	glColor3f(vpCorBorda[viewport][0], vpCorBorda[viewport][1], vpCorBorda[viewport][2]);
-	glLineWidth(tam);
-
-	glBegin(GL_LINE_STRIP);
-		glVertex2f(vpLimites[viewport][0] + deslocXi, vpLimites[viewport][2] + deslocYi);
-		glVertex2f(vpLimites[viewport][0] + deslocXi, vpLimites[viewport][3] + deslocYf);
-		glVertex2f(vpLimites[viewport][1] + deslocXf, vpLimites[viewport][3] + deslocYf);
-		glVertex2f(vpLimites[viewport][1] + deslocXf, vpLimites[viewport][2] + deslocYi);
-		glVertex2f(vpLimites[viewport][0] + deslocXi, vpLimites[viewport][2] + deslocYi);
-	glEnd();*/
-
 	GLdouble xi = vpLimites[viewport][0],
 		 xf = vpLimites[viewport][1],
 		 yi = vpLimites[viewport][2],
