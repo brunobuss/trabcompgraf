@@ -102,7 +102,7 @@ void RostoRobo()
 			if(stateBoca == BOCA_FECHADA ||
 			   stateBoca == BOCA_ABERTA)
 			{
-				BF = 5;
+				BF = 15;
 				BT = 1;
 			}
 		}
@@ -115,7 +115,7 @@ void RostoRobo()
 			if(stateBoca == BOCA_FECHADA ||
 			   stateBoca == BOCA_ABERTA)
 			{
-				BF = 5;
+				BF = 15;
 				BT = 1;
 			}
 		}
@@ -128,7 +128,7 @@ void RostoRobo()
 			if(stateBoca == BOCA_FECHADA ||
 			   stateBoca == BOCA_ABERTA)
 			{
-				BF = 5;
+				BF = 15;
 				BT = 1;
 			}
 			if(roboRage == 10) roboRage = 1;
