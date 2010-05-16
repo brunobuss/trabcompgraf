@@ -48,13 +48,19 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
     switch (arestaBolinha)
     {
         case ARESTA_DIREITA:
-            by  -= desl/10.0;            
+            by  -= desl/10.0;      
             if(by <= pdy)
             {
                 bx = pdx - (by - pdy);
                 by = pdy;
                 arestaBolinha   = ARESTA_INFERIOR;
             }
+            else if(by >= pay)
+            {
+                bx = pax - (by - pay);
+                by = pay;
+                arestaBolinha   = ARESTA_SUPERIOR;
+            }	    
             DBG(printf("ARESTA_DIREITA Aresta: %d bx %lf by: %lf\n", arestaBolinha, bx, by));
             break;
         case ARESTA_INFERIOR:            
@@ -65,6 +71,12 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
                 bx = pcx;
                 arestaBolinha   = ARESTA_ESQUERDA;
             }
+            else if(bx >= pdx)
+            {
+                by = pdy + (pdx - bx);
+                bx = pdx;
+                arestaBolinha   = ARESTA_DIREITA;
+            }	    
             DBG(printf("ARESTA_INFERIOR Aresta: %d bx %lf by: %lf\n", arestaBolinha, bx, by));
             break;
         case ARESTA_ESQUERDA:
@@ -75,6 +87,12 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
                 by = pby;
                 arestaBolinha   = ARESTA_SUPERIOR;
             }
+            else if(by <= pcy)
+            {
+                bx = pcx + (pcy - by);
+                by = pcy;
+                arestaBolinha   = ARESTA_INFERIOR;
+            }	    
             DBG(printf("ARESTA_ESQUERDA Aresta: %d bx %lf by: %lf\n", arestaBolinha, bx, by));
             break;
         case ARESTA_SUPERIOR:
@@ -85,12 +103,19 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
                 bx = pax;
                 arestaBolinha   = ARESTA_DIREITA;
             }
+            else if(bx <= pbx)
+            {
+                by = pby - (pbx - bx);
+                bx = pbx;
+                arestaBolinha   = ARESTA_ESQUERDA;
+            }	    
             DBG(printf("ARESTA_SUPERIOR Aresta: %d bx %lf by: %lf\n", arestaBolinha, bx, by));
             break;
         case ARESTA_NULA:
             bx  = pax;
             by  = pay;
-            arestaBolinha = ARESTA_DIREITA;
+	    if(desl >= 0) arestaBolinha = ARESTA_DIREITA;
+            else	  arestaBolinha = ARESTA_SUPERIOR;
         default:
             break;
     }
