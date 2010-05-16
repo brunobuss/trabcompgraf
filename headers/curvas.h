@@ -15,13 +15,22 @@ void defineCor(GLdouble *p);
 /* Alterna entre as duas curvas */
 void trocaCurva();
 
-#define PI 3.14159
+/* Constroe componentes do menu GLUI, referentes a parametros internos das curvas */
+void menuParametrosCurvas(GLUI *menu, GLUI_Panel *painel);
+
+/* Reseta a rotação do "mundo" */
+void resetaRotacao(int id);
+
+#define PI    (3.14159)
+#define TWOPI (6.28318)
 /* Equações da Butterfly:
    http://local.wasp.uwa.edu.au/~pbourke//geometry/butterfly/ */
 #define CURVA_BUTTERFLY 1
 #define BF_U (i * 24.0 * PI / N_Butterfly) 
 #define BF_PX (cos(u) * (exp(cos(u)) - 2 * cos(4 * u) - pow(sin(u / 12),5.0)))
 #define BF_PY (sin(u) * (exp(cos(u)) - 2 * cos(4 * u) - pow(sin(u / 12),5.0)))
+#define BF_PZ (fabs(py) / 2.0)
+
 
 /* Equações da Chrysanthemum
    http://local.wasp.uwa.edu.au/~pbourke//geometry/chrysanthemum/ */
@@ -32,6 +41,7 @@ void trocaCurva();
 #define CH_R (5*(1 + sin(11*u/5)) - 4*CH_P4*CH_P4*CH_P4*CH_P4 * CH_P8*CH_P8*CH_P8*CH_P8*CH_P8*CH_P8*CH_P8*CH_P8)
 #define CH_PX (CH_R * cos(u)) 
 #define CH_PY (CH_R * sin(u))
+#define CH_PZ ((CH_R/20.0 + 2) * sin(CH_R * TWOPI/7.0))
 
 
 

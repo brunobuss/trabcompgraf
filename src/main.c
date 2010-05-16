@@ -150,6 +150,7 @@ void setupMenu()
 	/* Viewport 4 */
 	menu->add_separator();
 	painelViewportInferiorDireita = menu->add_panel("Viewport 4: Curvas");
+	menuParametrosCurvas(menu, painelViewportInferiorDireita);
 	
 	
 	menu->set_main_gfx_window(id_janela);
@@ -391,7 +392,23 @@ void selecionaViewport(int viewport)
 }
 
 void defineCoordenadas(int viewport)
-{ 
+{
+	if(VIEWPORT_INFERIOR_DIREITA)
+	{
+		if(tamJanelaX == tamJanelaY)	glOrtho(vpLimites[viewport][0]		, vpLimites[viewport][1]         ,
+							vpLimites[viewport][2]		, vpLimites[viewport][3]	 ,
+							-100.0				, 100.0				);
+
+		else if(tamJanelaX > tamJanelaY)glOrtho(vpLimites[viewport][0] * razaoX	, vpLimites[viewport][1] * razaoX,
+							vpLimites[viewport][2]	  	, vpLimites[viewport][3]	 ,
+							-100.0				, 100.0				);
+
+		else				glOrtho(vpLimites[viewport][0]         	, vpLimites[viewport][1]         ,
+							vpLimites[viewport][2] * razaoY	, vpLimites[viewport][3] * razaoY,
+							-100.0				, 100.0				);
+	}
+	else
+	{
 	if(tamJanelaX == tamJanelaY)	gluOrtho2D(vpLimites[viewport][0]         , vpLimites[viewport][1]         ,
 						   vpLimites[viewport][2]	  , vpLimites[viewport][3]);
 
@@ -400,6 +417,7 @@ void defineCoordenadas(int viewport)
 
  	else				gluOrtho2D(vpLimites[viewport][0]         , vpLimites[viewport][1]         ,
 						   vpLimites[viewport][2] * razaoY, vpLimites[viewport][3] * razaoY);
+	}
 }
 
 void desenhaBorda(int viewport, GLfloat tam)

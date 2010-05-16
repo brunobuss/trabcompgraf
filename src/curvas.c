@@ -1,7 +1,7 @@
 #include "../headers/curvas.h"
 
-int N_Butterfly = 2000;
-int N_Chrysanthemum = 2000;
+int N_Butterfly = 7000;
+int N_Chrysanthemum = 7000;
 
 int selecionaCor = COR_RED_BLUE;
 
@@ -14,24 +14,33 @@ int troca = 0;
 int corRetorno;
 GLdouble lc[3];
 
+float vRot[16] = {
+		1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		0.0, 0.0, 0.0, 1.0};
+		
+GLUI_Rotation *rotacao;
 
 void desenhaCurvas()
 {
 	int i;
 	GLdouble u;
-	GLdouble px, py;
+	GLdouble px, py, pz;
 	GLdouble corCurva[3];
 
 	glPushMatrix();
 
+	glMultMatrixf(vRot);
+	
 	if(curva == CURVA_BUTTERFLY)
 	{
 		glRotatef(90.0, 0.0, 0.0, 1.0);
-		glScalef(10.0, 10.0, 1.0);
+		glScalef(10.0, 10.0, 10.0);
 	}
 	else if(curva == CURVA_CHRYSANTHEMUM)
 	{
-		glScalef(3.5, 3.5, 1.0);
+		glScalef(3.5, 3.5, 3.5);
 		glTranslatef(0.0, 2.5, 0.0);
 	}
 
@@ -47,8 +56,9 @@ void desenhaCurvas()
 			u  = BF_U;
 			px = BF_PX;
 			py = BF_PY;
+			pz = BF_PZ;			
 
-			glVertex2d(px, py);
+			glVertex3d(px, py, pz);
 		}
 	}
 	else if(curva == CURVA_CHRYSANTHEMUM)
@@ -58,8 +68,9 @@ void desenhaCurvas()
 			u  = CH_U;
 			px = CH_PX;
 			py = CH_PY;
+			pz = CH_PZ;
 
-			glVertex2d(px, py);
+			glVertex3d(px, py, pz);
 		}
 	}	
 	glEnd();
@@ -258,4 +269,17 @@ void defineCor(GLdouble *p)
 void trocaCurva()
 {
 	if(selecionaCor != COR_FADE_TO_BLACK && selecionaCor != COR_FADE_TO_COLOR) troca = 1;
+}
+
+void menuParametrosCurvas(GLUI *menu, GLUI_Panel *painel)
+{
+	GLUI_Button *bt_reset;
+  
+	rotacao = menu->add_rotation_to_panel(painel, "Rotacao", vRot);	
+	bt_reset = menu->add_button_to_panel(painel, "Resetar", 1, resetaRotacao);
+}
+
+void resetaRotacao(int id)
+{
+	if(id == 1) rotacao->reset();
 }
