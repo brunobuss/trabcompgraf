@@ -1,6 +1,7 @@
 #ifndef H_ROSTOROBO
 #define H_ROSTOROBO
 
+#include <GL/glui.h>
 #include <GL/glut.h>
 #include <math.h>
 #include <stdlib.h>

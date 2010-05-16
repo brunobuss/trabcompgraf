@@ -27,6 +27,11 @@ int mostraHelp	    = 0;
 /* Referencia a nossa janela do GLUT, necessário devido ao GLUI */
 int id_janela;
 
+/* Parâmetros das chamadas das animações */
+/* 3 Meios */
+float	 	vp1_param_lado = 14.0;
+
+
 int main(int argc, char *argv[])
 {
 	srand(time(NULL));
@@ -63,8 +68,6 @@ void setupGlut(int *argc, char *argv[])
 	glutMotionFunc(rastreiaMouseCallBack);
 	glutPassiveMotionFunc(rastreiaMouseCallBack);
 	glutTimerFunc(CONFIG_FPS_TIMER, timerFPS, 1);
-	
-	GLUI_Master.set_glutIdleFunc(idleCallBack);
 
 	DBG(printf("...GLUT configurado com sucesso\n"));
 }
@@ -72,16 +75,42 @@ void setupGlut(int *argc, char *argv[])
 void setupMenu()
 {
 	GLUI *menu;
+	GLUI_Panel *painelViewportSuperiorEsquerda;
+	GLUI_Panel *painelViewportSuperiorDireita;
+	GLUI_Panel *painelViewportInferiorEsquerda;
+	GLUI_Panel *painelViewportInferiorDireita;
+	GLUI_Spinner *vp1_lado;
 
 	initMenu();
 	menu = objetoMenu();
+
+	menu->add_statictext("Trabalho 1 de Computacao Grafica 2010/1");
+	menu->add_statictext("Criado por: Bruno C. Buss e Diego Cardoso");
+	menu->add_statictext("Aperte H para o Help sobre as funcionalidades da janela");
+
+	painelViewportSuperiorEsquerda = menu->add_panel("Viewport 1: 3 Meios");
+		
+	vp1_lado = menu->add_spinner_to_panel(painelViewportSuperiorEsquerda, "Lado:" , GLUI_SPINNER_FLOAT, &vp1_param_lado);
+	vp1_lado->set_float_limits(1.0, 200.0, GLUI_LIMIT_CLAMP);
+	
+	menuParametros3Meios(menu, painelViewportSuperiorEsquerda);
+	
+	
+	painelViewportSuperiorDireita = menu->add_panel("Viewport 2: RostoRobo");
+	
+	
+	painelViewportInferiorEsquerda = menu->add_panel("Viewport 3: Composicao de Movimentos");
+	
+	
+	painelViewportInferiorDireita = menu->add_panel("Viewport 4: Curvas");
 	
 	
 	menu->set_main_gfx_window(id_janela);
+	GLUI_Master.set_glutIdleFunc(idleCallBack);
 }
 
 void desenhaCallBack(void)
-{
+{ 
 	DBG(printf("Redesenhando a tela...\n"));
 	glClear(GL_COLOR_BUFFER_BIT);
         
@@ -90,7 +119,7 @@ void desenhaCallBack(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	desenha3Meios(0.0, 0.0, 0, 14.0);
+	desenha3Meios(0.0, 0.0, 0, vp1_param_lado);
 	desenhaBorda(VIEWPORT_SUPERIOR_ESQUERDA, CONFIG_TAM_BORDA);
 
 
@@ -137,6 +166,7 @@ void desenhaCallBack(void)
 
 	glutSwapBuffers();
 
+	
 	DBG(printf("... terminou o redesenho.\n"));
 }
 
