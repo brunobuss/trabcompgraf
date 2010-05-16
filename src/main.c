@@ -104,6 +104,7 @@ void setupMenu()
 
 	
 	/* Viewport 1 */
+	menu->add_separator();
 	painelViewportSuperiorEsquerda = menu->add_panel("Viewport 1: 3 Meios");
 		
 	vp1_lado = menu->add_spinner_to_panel(painelViewportSuperiorEsquerda, "Lado:" , GLUI_SPINNER_FLOAT, &vp1_param_lado);
@@ -114,20 +115,26 @@ void setupMenu()
 	
 	
 	/* Viewport 2 */
+	menu->add_separator();
 	painelViewportSuperiorDireita = menu->add_panel("Viewport 2: RostoRobo");
+	menuParametrosRostoRobo(menu, painelViewportSuperiorDireita);
 	
 	
 	/* Viewport 3 */
+	menu->add_separator();
 	painelViewportInferiorEsquerda = menu->add_panel("Viewport 3: Composicao de Movimentos");
 	
 	vp3_lado = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Lado do quadrado:" , GLUI_SPINNER_FLOAT, &vp3_param_lado);
 	vp3_lado->set_float_limits(1.0, 14.0, GLUI_LIMIT_CLAMP);
+	vp3_lado->set_speed(0.5);
 	
-	vp3_ang = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Angulo de rotação:" , GLUI_SPINNER_FLOAT, &vp3_param_ang);
+	vp3_ang = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Angulo de rotacao:" , GLUI_SPINNER_FLOAT, &vp3_param_ang);
 	vp3_ang->set_float_limits(-360, 360, GLUI_LIMIT_CLAMP);
+	vp3_ang->set_speed(0.1);
 	
 	vp3_desl = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Deslocamento da bolinha:" , GLUI_SPINNER_FLOAT, &vp3_param_desl);
 	vp3_desl->set_float_limits(-10, 10, GLUI_LIMIT_CLAMP);
+	vp3_desl->set_speed(0.1);
 
 	vp3_frames = menu->add_spinner_to_panel(painelViewportInferiorEsquerda, "Frames por redesenho:" , GLUI_SPINNER_INT, &vp3_nframes);
 	vp3_frames->set_int_limits(1, 50, GLUI_LIMIT_CLAMP);
@@ -141,6 +148,7 @@ void setupMenu()
 	
 	
 	/* Viewport 4 */
+	menu->add_separator();
 	painelViewportInferiorDireita = menu->add_panel("Viewport 4: Curvas");
 	
 	

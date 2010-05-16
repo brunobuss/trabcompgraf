@@ -1,9 +1,11 @@
 #include "../headers/rostorobo.h"
 
-GLdouble P = 10.0,
+
+
+float	 P = 10.0,
 	 Q = 6.0, /* Parametros das elipses dos olhos */
-	 R = 3.0, /* Raio do olho */
-	 corElipse[3]  = {1.0, 1.0, 1.0},/* Cor das elipses dos olhos */
+	 R = 3.0; /* Raio do olho */
+GLdouble corElipse[3]  = {1.0, 1.0, 1.0},/* Cor das elipses dos olhos */
 	 corOlhosN[3]  = {0.0, 0.0, 0.0},/* Cor dos olhos normais */
 	 corOlhosP[3]  = {0.0, 1.0, 0.0},/* Cor dos olhos ao ser picado */
 	 corFundoR[3]  = {1.0, 1.0, 0.0},/* Cor da "cara" do robo */
@@ -628,3 +630,31 @@ void apagaPicadasRostoRobo(void)
 	statePicada = 0;
 	roboRage = 0;
 }
+
+void menuParametrosRostoRobo(GLUI *menu, GLUI_Panel *painel)
+{
+	GLUI_Panel *p_Olhos;
+	GLUI_Spinner *vp3_olhos_P;
+	GLUI_Spinner *vp3_olhos_Q;
+	GLUI_Spinner *vp3_olhos_R;
+	GLUI_Spinner *vp3_dentes_qnt;
+	GLUI_Spinner *vp3_tam_picada;
+  
+	p_Olhos = menu->add_panel_to_panel(painel, "Olhos:");
+	vp3_olhos_P = menu->add_spinner_to_panel(p_Olhos, "P:" , GLUI_SPINNER_FLOAT, &P);
+	vp3_olhos_P->set_float_limits(10.0, 15.0, GLUI_LIMIT_CLAMP);
+	
+	vp3_olhos_Q = menu->add_spinner_to_panel(p_Olhos, "Q:" , GLUI_SPINNER_FLOAT, &Q);
+	vp3_olhos_Q->set_float_limits(6.0, 14.0, GLUI_LIMIT_CLAMP);
+	
+	vp3_olhos_R = menu->add_spinner_to_panel(p_Olhos, "R:" , GLUI_SPINNER_FLOAT, &R);
+	vp3_olhos_R->set_float_limits(0.0,  6.0, GLUI_LIMIT_CLAMP);
+	
+	
+	vp3_dentes_qnt = menu->add_spinner_to_panel(painel, "Numero de Dentes:" , GLUI_SPINNER_INT, &nDentes);
+	vp3_dentes_qnt->set_int_limits(1, 30, GLUI_LIMIT_CLAMP);
+
+	vp3_tam_picada = menu->add_spinner_to_panel(painel, "Tamanho da picada:" , GLUI_SPINNER_FLOAT, &tamPicada);
+	vp3_tam_picada->set_float_limits(1.0,  10.0, GLUI_LIMIT_CLAMP);
+}
+

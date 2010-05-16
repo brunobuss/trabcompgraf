@@ -42,6 +42,9 @@ void mousequitoSaiuDoRosto();
 /* Função para apagar todas as picadas do RostoRobo */
 void apagaPicadasRostoRobo(void);
 
+/* Constroe componentes do menu GLUI, referentes a parametros internos do Rosto Robo */
+void menuParametrosRostoRobo(GLUI *menu, GLUI_Panel *painel);
+
 /* ===Constantes=== */
 #define N_PICADAS 20000
 
