@@ -7,7 +7,7 @@ GLdouble    angMovimento = 0.0;
 //Inicializador da bola
 int         arestaBolinha = ARESTA_NULA;
 
-GLdouble    vetorCaminho[1500][3];
+GLdouble    vetorCaminho[1500][4];
 
 //Contador para ser usado no vetor
 int         contCaminho = 0;
@@ -28,8 +28,8 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
     GLdouble    corQuad[3]          = {1.0, 1.0, 0.0},
                 corBola[3]         = {0.25, 0.35, 0.8},
                 corCaminho[3][3]   = {  {0.15, 0.15, 0.50},
-                                        {0.00, 0.15, 0.15},
-                                        {0.15, 0.00, 0.50}};
+                                        {0.00, 0.75, 0.15},
+                                        {0.50, 0.40, 0.70}};
 
     int i = 0;
     
@@ -65,6 +65,7 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
                 bx = pax - (by - pay);
                 by = pay;
                 arestaBolinha   = ARESTA_SUPERIOR;
+                contVolta = (contVolta + 1) % 3; // trocando a cor do rastro
             }	    
             DBG(printf("ARESTA_DIREITA Aresta: %d bx %lf by: %lf\n", arestaBolinha, bx, by));
             break;
@@ -107,6 +108,7 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
                 by = pay - (bx - pax);
                 bx = pax;
                 arestaBolinha   = ARESTA_DIREITA;
+                contVolta = (contVolta + 1) % 3; // trocando a cor do rastro
             }
             else if(bx <= pbx)
             {
@@ -138,21 +140,22 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
     //ADICIONANDO OS PONTOS DA BOLA PARA O RASTRO DO CAMINHO
     if(contCaminho < 1500)
     {
-        setPontosBola(contCaminho, angMovimento);
-        DBG(printf("X %lf Y %lf ANG %lf\n", vetorCaminho[contCaminho][0],vetorCaminho[contCaminho][1], vetorCaminho[contCaminho][2]));
+        setPontosBola(contCaminho, angMovimento, contVolta);
+        DBG(printf("X %lf Y %lf ANG %lf COR %lf\n", vetorCaminho[contCaminho][0],vetorCaminho[contCaminho][1], vetorCaminho[contCaminho][2],vetorCaminho[contCaminho][3]));
         contCaminho++;
     }
 
     if(contCaminho)
     {
         glPointSize(2.0);
-        glColor3dv(corCaminho);
         
         glBegin(GL_LINES);
         
         for(i = 1; i < contCaminho; i++)
         {
+            glColor3dv(corCaminho[(int)vetorCaminho[i-1][3]]);
             glVertex2d(vetorCaminho[i-1][0], vetorCaminho[i-1][1]);
+            glColor3dv(corCaminho[(int)vetorCaminho[i][3]]);
             glVertex2d(vetorCaminho[i][0], vetorCaminho[i][1]);   
         }
 
@@ -187,11 +190,12 @@ void movimentos(GLdouble lado, GLfloat ang, GLfloat desl, GLfloat tempo)
 
 }
 
-void setPontosBola(int i, GLdouble angulo)
+void setPontosBola(int i, GLdouble angulo, int cor)
 {
     vetorCaminho[i][0] = bx * cos(((float) 3.14159/180) * angulo) - by * sin(((float) 3.14159/180) * angulo);
     vetorCaminho[i][1] = bx * sin(((float) 3.14159/180) * angulo) + by * cos(((float) 3.14159/180) * angulo);
     vetorCaminho[i][2] = angMovimento;
+    vetorCaminho[i][3] = cor;
 }
 
 void apagaRastro()
