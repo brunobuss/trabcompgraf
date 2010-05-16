@@ -66,8 +66,6 @@ void setupGlut(int *argc, char *argv[])
 
 void desenhaCallBack(void)
 {
-	if(redesenhaJanela == 0) return;
-
 	DBG(printf("Redesenhando a tela...\n"));
 	redesenhaJanela = 0;
 
@@ -130,6 +128,11 @@ void desenhaCallBack(void)
 
 void idleCallBack()
 {
+	if(redesenhaJanela == 1)
+	{
+		redesenhaJanela = 0;
+		glutPostRedisplay();
+	}
 }
 
 void tecladoCallBack(unsigned char tecla, int x, int y)
@@ -218,8 +221,8 @@ void redimensionaCallBack(int w, int h)
 
 	razaoX = (GLdouble)w/h;
 	razaoY = (GLdouble)h/w;
-
-	glutPostRedisplay();
+	
+	redesenhaJanela = 1;
 }
 
 void rastreiaMouseCallBack(int x, int y)
@@ -250,7 +253,6 @@ void timerFPS(int valor)
 	DBG(printf("Temporizador disparado.\n"));
 
 	redesenhaJanela = 1;
-	glutPostRedisplay();
 	glutTimerFunc(CONFIG_FPS_TIMER, timerFPS, 1);
 }
 
