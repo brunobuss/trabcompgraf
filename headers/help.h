@@ -8,7 +8,7 @@
 
 /* Funções referentes a tela de menu */
 
-void desenhaHelp();
+void desenhaHelp(GLdouble l, GLdouble a);
 
 /* ===Constantes=== */
 

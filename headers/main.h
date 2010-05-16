@@ -63,7 +63,7 @@ void mousequito(int x, int y, int t);
 
 /* ===Constantes=== */
 /* Configurações inicial dos programa */
-#define CONFIG_DISPLAYMODE GLUT_DOUBLE | GLUT_RGB
+#define CONFIG_DISPLAYMODE GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH
 #define CONFIG_TAMHOR_INICIAL 500
 #define CONFIG_TAMVER_INICIAL 500
 #define CONFIG_POSX_INICIAL 100

@@ -49,6 +49,8 @@ void setupGlut(int *argc, char *argv[])
 	glClearColor(0.0, 0.0, 0.0, 0.0); /* Define a cor do GL_COLOR_BUFFER_BIT */
 	glShadeModel(GL_FLAT);
         glEnable(GL_POINT_SMOOTH);
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glutDisplayFunc(desenhaCallBack);
 	glutReshapeFunc(redimensionaCallBack);
@@ -71,7 +73,44 @@ void desenhaCallBack(void)
 
 	glClear(GL_COLOR_BUFFER_BIT);
         
-	
+	selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
+	defineCoordenadas(VIEWPORT_SUPERIOR_ESQUERDA);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	desenha3Meios(0.0, 0.0, 0, 14.0);
+	desenhaBorda(VIEWPORT_SUPERIOR_ESQUERDA, CONFIG_TAM_BORDA);
+
+
+
+	selecionaViewport(VIEWPORT_SUPERIOR_DIREITA);
+	defineCoordenadas(VIEWPORT_SUPERIOR_DIREITA);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	RostoRobo();
+	desenhaBorda(VIEWPORT_SUPERIOR_DIREITA, CONFIG_TAM_BORDA);
+
+
+
+	selecionaViewport(VIEWPORT_INFERIOR_ESQUERDA);
+	defineCoordenadas(VIEWPORT_INFERIOR_ESQUERDA);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+        movimentos(10.0, 5.0, -1 ,0);
+	desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
+
+
+
+	selecionaViewport(VIEWPORT_INFERIOR_DIREITA);
+	defineCoordenadas(VIEWPORT_INFERIOR_DIREITA);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	desenhaCurvas();
+	desenhaBorda(VIEWPORT_INFERIOR_DIREITA, CONFIG_TAM_BORDA);
+
 	if(mostraHelp == 1)
 	{
 		selecionaViewport(VIEWPORT_HELP);
@@ -79,48 +118,9 @@ void desenhaCallBack(void)
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		desenhaHelp();
-		desenhaBorda(VIEWPORT_HELP, CONFIG_TAM_BORDA);	  
-	}
-	else
-	{
-		selecionaViewport(VIEWPORT_SUPERIOR_ESQUERDA);
-		defineCoordenadas(VIEWPORT_SUPERIOR_ESQUERDA);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
-		desenha3Meios(0.0, 0.0, 0, 14.0);
-		desenhaBorda(VIEWPORT_SUPERIOR_ESQUERDA, CONFIG_TAM_BORDA);
-
-
-
-		selecionaViewport(VIEWPORT_SUPERIOR_DIREITA);
-		defineCoordenadas(VIEWPORT_SUPERIOR_DIREITA);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
-		RostoRobo();
-		desenhaBorda(VIEWPORT_SUPERIOR_DIREITA, CONFIG_TAM_BORDA);
-
-
-
-		selecionaViewport(VIEWPORT_INFERIOR_ESQUERDA);
-		defineCoordenadas(VIEWPORT_INFERIOR_ESQUERDA);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
-        	movimentos(10.0, 5.0, -1 ,0);
-		desenhaBorda(VIEWPORT_INFERIOR_ESQUERDA, CONFIG_TAM_BORDA);
-
-
-
-		selecionaViewport(VIEWPORT_INFERIOR_DIREITA);
-		defineCoordenadas(VIEWPORT_INFERIOR_DIREITA);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
-		desenhaCurvas();
-		desenhaBorda(VIEWPORT_INFERIOR_DIREITA, CONFIG_TAM_BORDA);
+		if(tamJanelaX == tamJanelaY)	desenhaHelp(vpLimites[VIEWPORT_HELP][1], vpLimites[VIEWPORT_HELP][3]);
+		else if(tamJanelaX > tamJanelaY)desenhaHelp(vpLimites[VIEWPORT_HELP][1] * razaoX, vpLimites[VIEWPORT_HELP][3]);
+		else				desenhaHelp(vpLimites[VIEWPORT_HELP][1], vpLimites[VIEWPORT_HELP][3] * razaoY);
 	}
 
 	glutSwapBuffers();

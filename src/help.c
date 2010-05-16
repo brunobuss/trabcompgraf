@@ -29,12 +29,25 @@ char texto[N_LINHAS][TAM_LINHAS] = {
 		"Algumas opcoes das animacoes podem ser configuradas/alteradas pelo menu\0",
 		"Pressione H para retornar as animacoes\0"};
 		
-void desenhaHelp()
+void desenhaHelp(GLdouble l, GLdouble a)
 {
 	int i, j;
 	GLdouble posx =  10.0,
 		 posy = 420.0;
 	 
+		 
+	glColor4f(0.0, 0.0, 0.0, 0.8);
+	
+	glBegin(GL_POLYGON);
+		glVertex2d(0.0, 0.0);
+		glVertex2d(  l, 0.0);
+		glVertex2d(  l,   a);
+		glVertex2d(0.0,   a);
+	glEnd();
+
+	
+	glColor4f(1.0, 1.0, 1.0, 0.95);
+		 
 	for(i = 0; i < N_LINHAS; i++)
 	{
 		glRasterPos2d(posx, posy);
