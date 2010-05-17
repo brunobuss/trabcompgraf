@@ -6,6 +6,10 @@ Diego Cardoso <diegopc86 at gmail dot com>
 
 Objetivo do trabalho: Animações em 2D utilizando o OpenGL, GLUT e GLUI.
 
+Todo este trabalho esta licensiado utilizando a licença X11 (conhecida também como licença MIT).
+http://en.wikipedia.org/wiki/MIT_License
+Uma cópia dela esta contida no arquivo LICENSE e no início de todos os arquivos.
+
 A última versão do código fonte pode ser obtida em:
 http://github.com/brunobuss/trabcompgraf
 
