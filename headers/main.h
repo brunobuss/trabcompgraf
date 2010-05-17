@@ -13,7 +13,6 @@
 #include "rostorobo.h"
 #include "curvas.h"
 #include "help.h"
-#include "menu.h"
 
 /* ===Funções=== */
 /* Funcão de inicialização do OpeniGL/GLUT/GLUI */

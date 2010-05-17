@@ -585,25 +585,20 @@ void movimentaOlhos()
 	if(frameOlho == qntFrameOlho) frameOlho = 0;
 }
 
-/* Abordagem mais complexa */
 int verificaColisao(GLdouble p1x, GLdouble p1y, GLdouble p2x, GLdouble p2y)
 {
-	GLdouble vx[360], vy[360], px, py;
-	int i, j;
+	GLdouble vx, vy, pdx, pdy;
+	int i;
 
 	for(i = 0; i < 360; i++)
 	{
-		vx[i] = cos(((float) 3.14159/180) * i) * P + p1x,
-		vy[i] = sin(((float) 3.14159/180) * i) * Q + p1y;
-	}
-
-	for(i = 0; i < 360; i++)
-	{
-		px = cos(((float) 3.14159/180) * i) * R + p2x,
-		py = sin(((float) 3.14159/180) * i) * R + p2y;
-
-		for(j = 0; j < 360; j++) if(px <= vx[j] + 0.1 && px >= vx[j] - 0.1 &&
-					    py <= vy[j] + 0.1 && py >= vy[j] - 0.1) return 0;
+		vx = cos(((float) 3.14159/180) * i) * P + p1x,
+		vy = sin(((float) 3.14159/180) * i) * Q + p1y;
+		
+		pdx = vx - p2x;
+		pdy = vy - p2y;
+		
+		if(sqrt(pdx * pdx + pdy * pdy) <= R + 0.2) return 0;
 	}
 
 	return 1;
