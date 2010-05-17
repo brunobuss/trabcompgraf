@@ -1,0 +1,6 @@
+#Ignora todos os arquivos objetos, resultados intermediarios da compilação
+*.o
+#Ignora todos os arquivos de swap criados pelos editores
+*.swp
+*~
+
