@@ -31,7 +31,7 @@ void apagaRastro();
 
 /* ===Constantes=== */
 
-#define TAM_FILA 10240
+#define TAM_FILA 2048
 
 #define ARESTA_DIREITA      0
 #define ARESTA_INFERIOR     1

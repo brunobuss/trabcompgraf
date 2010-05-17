@@ -75,6 +75,7 @@ void mousequito(int x, int y, int t);
 #define CONFIG_POSX_INICIAL 100
 #define CONFIG_POSY_INICIAL 100
 #define CONFIG_TITULO_JANELA "Trabalho 1 de Computacao Grafica (DCC-UFRJ) 2010/1"
+#define MENU_NOME "Menu"
 
 /* Quadros por segundo desejado */
 #define CONFIG_FPS 50

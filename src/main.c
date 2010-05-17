@@ -27,6 +27,9 @@ int mostraHelp	    = 0;
 /* Referencia a nossa janela do GLUT, necessário devido ao GLUI */
 int id_janela;
 
+/* Objeto principal do GLUI */
+GLUI *menu;
+
 /* Parâmetros das chamadas das animações */
 /* 3 Meios */
 float	 	vp1_param_lado = 14.0;
@@ -34,7 +37,7 @@ float	 	vp1_param_lado = 14.0;
 float		vp3_param_lado =  10.0;
 float		vp3_param_ang  =   5.0;
 float		vp3_param_desl =  -1.0;
-int		vp3_nframes    =  1;
+int		vp3_nframes    =   1;
 int		vp3_pframes    =  20; 
 int		vp3_desenhaQuadrado    =   1; 
 int		vp3_desenhaBolinha     =   1; 
@@ -82,7 +85,6 @@ void setupGlut(int *argc, char *argv[])
 
 void setupMenu()
 {
-	GLUI *menu;
 	GLUI_Panel *painelViewportSuperiorEsquerda;
 	GLUI_Panel *painelViewportSuperiorDireita;
 	GLUI_Panel *painelViewportInferiorEsquerda;
@@ -94,8 +96,7 @@ void setupMenu()
 	GLUI_Spinner *vp3_frames;	
 	GLUI_Panel   *vp3_desenha;
 	
-	initMenu();
-	menu = objetoMenu();
+	menu = GLUI_Master.create_glui(MENU_NOME, 0, CONFIG_POSX_INICIAL + tamJanelaX + 10, CONFIG_POSY_INICIAL);
 
 	/* Cabecalho */
 	menu->add_statictext("Trabalho 1 de Computacao Grafica 2010/1");

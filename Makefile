@@ -1,11 +1,11 @@
 all: linux
 
-linux: main tresmeios rostorobo movimentos curvas help menu headers/debug.h
-	g++ -o trabalho1compgraf_linux -fwhole-program -lglui -lglut -lGLU -lGL -lm -O2 -Wall -Wextra main.o tresmeios.o movimentos.o rostorobo.o curvas.o help.o menu.o
+linux: main tresmeios rostorobo movimentos curvas help headers/debug.h
+	g++ -o trabalho1compgraf_linux -fwhole-program -lglui -lglut -lGLU -lGL -lm -O2 -Wall -Wextra main.o tresmeios.o movimentos.o rostorobo.o curvas.o help.o
 
 #Compilação para Windows NAO FOI TESTADA pois nenhum dos membros utilizava ambiente Windows durante o desenvolvimento do projeto
-win: main tresmeios rostorobo movimentos curvas help menu headers/debug.h
-	g++ -o trabalho1compgraf_win.exe -lglui32 -lglut32 -lglu32 -lopengl32 -lm -O2 -Wall -Wextra main.o tresmeios.o movimentos.o rostorobo.o curvas.o help.o menu.o
+win: main tresmeios rostorobo movimentos curvas help headers/debug.h
+	g++ -o trabalho1compgraf_win.exe -lglui32 -lglut32 -lglu32 -lopengl32 -lm -O2 -Wall -Wextra main.o tresmeios.o movimentos.o rostorobo.o curvas.o help.o
 
 main: src/main.c headers/main.h
 	g++ -c -o main.o -O2 -Wall -Wextra src/main.c 
@@ -25,9 +25,6 @@ curvas: src/curvas.c headers/curvas.h
 help: src/help.c headers/help.h
 	g++ -c -o help.o -O2 -Wall -Wextra src/help.c
 
-menu: src/menu.c headers/menu.h
-	g++ -c -o menu.o -O2 -Wall -Wextra src/menu.c
-
 clean: 
 	rm trabalho1compgraf_linux
 	rm main.o
@@ -36,4 +33,3 @@ clean:
 	rm rostorobo.o
 	rm curvas.o
 	rm help.o
-	rm menu.o
