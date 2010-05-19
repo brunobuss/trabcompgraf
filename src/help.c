@@ -27,11 +27,11 @@ Copyright (c) 2010 Bruno C. Buss and Diego Cardoso
 
 /* Texto a ser exibido na janela de HELP */
 char texto[N_LINHAS][TAM_LINHAS] = {
-		"Trabalho 1 de Computacao Grafica - 2010/1\0",
+		"Trabalho 1 de Computacao Grafica - 2010/1. Prof: Paulo Roma.\0",
 		"\0",
 		"Alunos:\0",
-		"Bruno C. Buss <bruno dot buss at gmail dot com>\0",
-		"Diego Cardoso <diegopc86 at gmail dot com>\0",
+		"Bruno C. Buss (DRE 106087954) <bruno dot buss at gmail dot com>\0",
+		"Diego P. Cardoso (DRE 106028188) <diegopc86 at gmail dot com>\0",
 		"\0",
 		"Site do projeto: http://github.com/brunobuss/trabcompgraf\0",
 		"\0",
